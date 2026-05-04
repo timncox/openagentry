@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: lint + typecheck + test + build
+    name: typecheck + build + test
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -22,5 +22,5 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r typecheck
-      - run: pnpm -r test
       - run: pnpm -r build
+      - run: pnpm -r test
