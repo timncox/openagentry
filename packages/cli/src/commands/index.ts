@@ -1,17 +1,13 @@
 /**
- * Command registry. Subsequent tasks add commands by importing them here
- * and merging them into the `commands` record.
+ * Command registry. Side-effect imports register each command at module load.
  *
  * @module
  */
 
 import { AgentryError } from '@openagentry/core';
 import type { Command } from '../command.js';
+import { versionCommand } from './version.js';
 
-/**
- * The registered commands. Keys are command names (as typed: `agentry list`).
- * Tasks 8–12 populate this map.
- */
 export const commands: Record<string, Command> = {};
 
 export function registerCommand(cmd: Command): void {
@@ -31,3 +27,6 @@ export function getCommand(name: string): Command {
   }
   return found;
 }
+
+// Registrations
+registerCommand(versionCommand);
