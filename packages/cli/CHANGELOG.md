@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0-alpha.1 — 2026-05-04
+
+- Add library export at the package root (`main`/`module`/`exports`):
+  - `dispatch`, `DispatchOptions`, `parseArgs`, `ParsedArgs`, `FlagValue`
+  - `commands`, `registerCommand`, `getCommand`
+  - `defineCommand`, `Command`, `CommandContext`
+  - `Output`, `OutputOptions`
+- Build now emits both `dist/cli.cjs` (bin, with shebang) AND `dist/lib.{js,cjs,d.ts}` (library)
+- Bin behavior unchanged
+
 ## 0.1.0-alpha.0 — 2026-05-04
 
 Initial CLI skeleton:

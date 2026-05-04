@@ -1,9 +1,19 @@
 {
   "name": "@openagentry/cli",
-  "version": "0.1.0-alpha.0",
-  "description": "OpenAgentry CLI — the `agentry` binary",
+  "version": "0.1.0-alpha.1",
+  "description": "OpenAgentry CLI — the `agentry` binary + library surface",
   "license": "Apache-2.0",
   "type": "module",
+  "main": "./dist/lib.cjs",
+  "module": "./dist/lib.js",
+  "types": "./dist/lib.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/lib.d.ts",
+      "import": "./dist/lib.js",
+      "require": "./dist/lib.cjs"
+    }
+  },
   "bin": {
     "agentry": "./dist/cli.cjs"
   },
