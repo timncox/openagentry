@@ -8,14 +8,16 @@ This monorepo holds all official `@openagentry/*` packages.
 
 Alpha. Shipped:
 - `@openagentry/core@0.1.0-alpha.1` — public SDK (adapter interfaces, plugin protocol, runtime helpers)
-- `@openagentry/cli@0.1.0-alpha.0` — `agentry` binary with read-only commands
+- `@openagentry/cli@0.1.0-alpha.1` — `agentry` binary + library export of dispatcher/registry
+- `@openagentry/mcp@0.1.0-alpha.0` — `agentry-mcp` meta-MCP server (every CLI command exposed as an MCP tool)
 
-Plan C (`@openagentry/mcp` — meta-MCP server) is next.
+Plan D (`@openagentry/adapter-test-suite` — conformance runner) is next.
 
 ## Packages
 
 - [`@openagentry/core`](./packages/core) — adapter interfaces, plugin protocol, runtime helpers
-- [`@openagentry/cli`](./packages/cli) — the `agentry` CLI binary
+- [`@openagentry/cli`](./packages/cli) — the `agentry` CLI binary + library
+- [`@openagentry/mcp`](./packages/mcp) — the `agentry-mcp` meta-MCP server
 
 ## Development
 
