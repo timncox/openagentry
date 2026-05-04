@@ -49,7 +49,12 @@ export const pluginManifestSchema = z.object({
   type: z.enum(pluginTypes),
   id: z.string().min(1),
   category: z.enum(adapterCategories).optional(),
-  protocolVersion: z.string().regex(/^\d+$/, 'protocolVersion must be a number string like "1"'),
+  protocolVersion: z
+    .string()
+    .regex(
+      /^(\^|>=)?\d+$/,
+      'protocolVersion must be a range like "1", "^1", or ">=1"',
+    ),
   envVars: z.array(envVarSchema).default([]),
   fillsSlots: z.array(z.string()).default([]),
   requiresSlots: z.array(z.string()).default([]),

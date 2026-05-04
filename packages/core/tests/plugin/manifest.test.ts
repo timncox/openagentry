@@ -80,6 +80,20 @@ describe('plugin manifest', () => {
     expect(m.id).toBe('host-cloudflare');
   });
 
+  it('protocolVersion accepts "1", "^1", and ">=1"', () => {
+    for (const v of ['1', '^1', '>=1']) {
+      const result = pluginManifestSchema.safeParse({ ...validHostAdapter, protocolVersion: v });
+      expect(result.success, `expected "${v}" to parse`).toBe(true);
+    }
+  });
+
+  it('protocolVersion rejects malformed ranges like "v1" or "1.0"', () => {
+    for (const v of ['v1', '1.0', '~1', 'latest']) {
+      const result = pluginManifestSchema.safeParse({ ...validHostAdapter, protocolVersion: v });
+      expect(result.success, `expected "${v}" to fail`).toBe(false);
+    }
+  });
+
   it('scaffold manifest does not require category/id format check', () => {
     const scaffold: PluginManifest = {
       type: 'scaffold',
