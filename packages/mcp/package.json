@@ -1,0 +1,40 @@
+{
+  "name": "@openagentry/mcp",
+  "version": "0.1.0-alpha.0",
+  "description": "OpenAgentry meta-MCP server — exposes every agentry CLI command as an MCP tool",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "agentry-mcp": "./dist/index.cjs"
+  },
+  "files": [
+    "dist",
+    "LLM.md",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@openagentry/cli": "workspace:*",
+    "@openagentry/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "execa": "^9.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
