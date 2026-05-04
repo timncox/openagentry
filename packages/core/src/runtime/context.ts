@@ -1,7 +1,13 @@
 /**
- * AdapterContext — passed into adapter lifecycle hooks (init, auth,
- * healthcheck, refresh). Holds environment-specific configuration that
- * adapters need.
+ * AdapterContext — environment-specific configuration that adapter
+ * implementations may consume from their own constructor or factory.
+ *
+ * Reserved as the parameter shape for future protocol-level lifecycle
+ * hooks (`init`, `auth`, `healthcheck`, `refresh`). At protocol v1 those
+ * hooks are not part of the adapter interfaces — the runtime does not
+ * call them. Adapters that need workspace paths, secrets, or a logger
+ * may accept this shape internally; the framework will start invoking
+ * lifecycle hooks once they are added to the protocol.
  *
  * @module
  */

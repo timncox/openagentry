@@ -22,7 +22,11 @@ declare const __region: unique symbol;
 /** Provider-specific region identifier, e.g. `"us-east-1"`, `"global"`. */
 export type Region = string & { readonly [__region]: true };
 
-/** Identifies an adapter installation. */
+/**
+ * Identifies an adapter installation. Forward-looking shape used by
+ * registry/loader code in later packages (CLI, conformance suite); not
+ * yet consumed by `@openagentry/core` itself.
+ */
 export interface AdapterId {
   category: string;
   id: string;
