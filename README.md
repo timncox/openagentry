@@ -6,7 +6,8 @@ This monorepo holds all official `@openagentry/*` packages.
 
 ## Status
 
-Pre-alpha. Plan A (`@openagentry/core`) under construction.
+Alpha. `@openagentry/core@0.1.0-alpha.1` shipped (Plan A complete; not yet on npm).
+Plan B (`@openagentry/cli`) is next.
 
 ## Packages
 

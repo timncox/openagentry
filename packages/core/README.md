@@ -35,10 +35,12 @@ await host.deploy(project, 'prod');
 
 ## Adapter categories
 
-`host`, `db`, `auth`, `email`, `llm`, `storage`, `kv`, `cron`, `domain`,
-`repo`, `wiki`, `billing`, `push`.
+**Shipped (interfaces in `src/adapters/<category>.ts`):**
+`host`, `db`, `auth`, `email`, `llm`, `storage`, `domain`, `repo`, `wiki`.
 
-Each has a TypeScript interface in `src/adapters/<category>.ts`.
+**Reserved (valid manifest values; interfaces land in later releases):**
+`kv` (filled by host adapter where bundled), `cron` (filled by host adapter),
+`billing`, `push`.
 
 ## Plugin manifest
 
@@ -77,4 +79,4 @@ agent can recover without asking the user.
 
 ## License
 
-[Apache-2.0](../../LICENSE)
+[Apache-2.0](./LICENSE)
