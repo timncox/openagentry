@@ -1,11 +1,18 @@
-// `agentry` CLI entry point. Real dispatch wired up in Task 5.
-// This stub exists so the package builds cleanly from Task 1 onward.
+/**
+ * `agentry` CLI entry point.
+ *
+ * The shebang is added by tsup's `banner.js` config so this file remains
+ * a valid TypeScript source.
+ *
+ * @module
+ */
+
+import { dispatch } from './dispatcher.js';
 
 export const CLI_NAME = 'agentry' as const;
 
 async function main(): Promise<number> {
-  process.stdout.write(`${CLI_NAME}: stub\n`);
-  return 0;
+  return dispatch(process.argv.slice(2));
 }
 
 // Only run when executed directly (not when imported by tests).
@@ -14,7 +21,7 @@ if (require.main === module) {
   main().then(
     (code) => process.exit(code),
     (err) => {
-      process.stderr.write(`${CLI_NAME}: ${String(err)}\n`);
+      process.stderr.write(`${CLI_NAME}: fatal: ${String(err)}\n`);
       process.exit(2);
     },
   );
