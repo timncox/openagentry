@@ -11,6 +11,7 @@ import type {
   Repository,
   RepoCreateOpts,
 } from '../../src/adapters/repo.js';
+import type { ConfirmToken } from '../../src/types.js';
 
 describe('DomainAdapter', () => {
   it('declares category="domain"', () => {
@@ -55,5 +56,10 @@ describe('RepoAdapter', () => {
       url: string;
       defaultBranch: string;
     }>();
+  });
+  it('delete requires a ConfirmToken', () => {
+    expectTypeOf<RepoAdapter['delete']>().toEqualTypeOf<
+      (repo: Repository, confirm: ConfirmToken) => Promise<void>
+    >();
   });
 });

@@ -4,6 +4,8 @@
  * @module
  */
 
+import type { ConfirmToken } from '../types.js';
+
 export interface Repository {
   owner: string;
   name: string;
@@ -27,7 +29,7 @@ export interface RepoAdapter {
   readonly id: string;
 
   create(opts: RepoCreateOpts): Promise<Repository>;
-  delete(repo: Repository): Promise<void>;
+  delete(repo: Repository, confirm: ConfirmToken): Promise<void>;
   get(owner: string, name: string): Promise<Repository | null>;
   /** Returns the URL the local git remote should point at. */
   remoteUrl(repo: Repository, mode: 'https' | 'ssh'): string;
