@@ -6,6 +6,7 @@ export default defineConfig({
     typecheck: {
       enabled: true,
       include: ['tests/**/*.test.ts'],
+      tsconfig: './tsconfig.test.json',
     },
   },
 });
