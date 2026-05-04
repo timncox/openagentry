@@ -10,6 +10,7 @@ import { versionCommand } from './version.js';
 import { helpCommand } from './help.js';
 import { doctorCommand } from './doctor.js';
 import { listCommand } from './list.js';
+import { capabilitiesCommand } from './capabilities.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -36,3 +37,4 @@ registerCommand(versionCommand);
 registerCommand(helpCommand);
 registerCommand(doctorCommand);
 registerCommand(listCommand);
+registerCommand(capabilitiesCommand);
