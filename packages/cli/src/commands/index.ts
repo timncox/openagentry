@@ -8,6 +8,7 @@ import { AgentryError } from '@openagentry/core';
 import type { Command } from '../command.js';
 import { versionCommand } from './version.js';
 import { helpCommand } from './help.js';
+import { doctorCommand } from './doctor.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -32,3 +33,4 @@ export function getCommand(name: string): Command {
 // Registrations
 registerCommand(versionCommand);
 registerCommand(helpCommand);
+registerCommand(doctorCommand);
