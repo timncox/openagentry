@@ -9,6 +9,7 @@ import type { Command } from '../command.js';
 import { versionCommand } from './version.js';
 import { helpCommand } from './help.js';
 import { doctorCommand } from './doctor.js';
+import { listCommand } from './list.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -34,3 +35,4 @@ export function getCommand(name: string): Command {
 registerCommand(versionCommand);
 registerCommand(helpCommand);
 registerCommand(doctorCommand);
+registerCommand(listCommand);
