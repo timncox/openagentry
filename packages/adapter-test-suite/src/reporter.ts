@@ -18,7 +18,8 @@ export function formatText(r: SuiteResult): string {
   for (const c of r.checks) {
     const head = `${MARKER[c.status]} ${c.id}`;
     if (c.status === 'fail' && c.message !== undefined) {
-      lines.push(`${head} — ${c.message}`);
+      const suffix = c.details !== undefined ? ' (+details)' : '';
+      lines.push(`${head} — ${c.message}${suffix}`);
     } else {
       lines.push(head);
     }

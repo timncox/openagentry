@@ -46,6 +46,20 @@ describe('formatText', () => {
     expect(out).toContain('host');
     expect(out).toContain('fake');
   });
+
+  it('header line places category before id@version', () => {
+    const out = formatText(sample);
+    expect(out.split('\n')[0]).toBe('host adapter fake@1.0.0');
+  });
+
+  it('renders · for skipped checks', () => {
+    const withSkip: SuiteResult = {
+      ...sample,
+      checks: [{ id: 'noop/skipped', status: 'skip', durationMs: 0 }],
+    };
+    const out = formatText(withSkip);
+    expect(out).toContain('· noop/skipped');
+  });
 });
 
 describe('formatJson', () => {
