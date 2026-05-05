@@ -15,6 +15,6 @@ Conformance runner for OpenAgentry adapters. Use this to verify any adapter pack
 ## Common pitfalls
 
 - `target` must be an absolute path to a directory containing `package.json` with an `openagentry` manifest block plus a built entry (e.g. `dist/index.cjs`) that default-exports the adapter object.
-- The adapter's `package.json.openagentry.category` must match the `<category>` argument to the CLI; mismatch fails `manifest/valid`.
+- The adapter's `package.json.openagentry.category` must match the `<category>` argument to the CLI; mismatch aborts the suite with `AgentryError(E_CATEGORY_MISMATCH)` before any checks run.
 - LLM.md must be <= 1024 tokens (heuristic: text length / 4) and contain at least two `## H2` sections — including one named like `Operations` / `Key exports` and one like `Common pitfalls` / `Errors`.
 - All adapter ops must throw `AgentryError` (not plain `Error`) on failure — functional suites assert this on a documented bad-input path.

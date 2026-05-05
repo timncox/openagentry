@@ -30,10 +30,6 @@ export function registerFunctionalSuite(
   functionalSuites.set(category, suite);
 }
 
-/** Test-only: clear the registry. */
-export function resetFunctionalSuitesForTesting(): void {
-  functionalSuites.clear();
-}
 
 async function readPackageVersion(packageDir: string): Promise<string> {
   try {
@@ -48,6 +44,15 @@ async function readPackageVersion(packageDir: string): Promise<string> {
 export async function runSuite(opts: RunOpts): Promise<SuiteResult> {
   const startedAt = new Date().toISOString() as IsoTimestamp;
   const target = await loadTarget(opts.target);
+
+  if (target.manifest.category === undefined) {
+    throw new AgentryError({
+      code: 'E_NO_CATEGORY',
+      message: `Adapter manifest at ${target.packageDir} has no category. The conformance suite only runs against adapter plugins; non-adapter plugins (scaffold, mcp, command, skill) cannot be conformance-tested.`,
+      phase: 'validate',
+      context: { packageDir: target.packageDir, type: target.manifest.type },
+    });
+  }
 
   if (opts.category !== undefined && opts.category !== target.manifest.category) {
     throw new AgentryError({
@@ -89,7 +94,7 @@ export async function runSuite(opts: RunOpts): Promise<SuiteResult> {
   return {
     adapter: {
       id: target.manifest.id,
-      category: target.manifest.category as AdapterCategory,
+      category: target.manifest.category,
       version,
     },
     passed,

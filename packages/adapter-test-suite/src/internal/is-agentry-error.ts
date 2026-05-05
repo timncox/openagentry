@@ -16,6 +16,11 @@ export interface AgentryErrorLike {
   name: 'AgentryError';
   code: string;
   phase: string;
+  message: string;
+  /** Present on instances created via @openagentry/core's AgentryError class. */
+  suggestedFix?: string;
+  /** Present on instances created via @openagentry/core's AgentryError class. */
+  toJSON?: () => unknown;
 }
 
 export function isAgentryError(value: unknown): value is AgentryErrorLike {

@@ -9,7 +9,8 @@
  */
 
 import { resolve } from 'node:path';
-import { isAgentryError, type AdapterCategory } from '@openagentry/core';
+import { type AdapterCategory } from '@openagentry/core';
+import { isAgentryError } from './internal/is-agentry-error.js';
 import { runSuite } from './runner.js';
 import { formatJson, formatText } from './reporter.js';
 import './suites/host.js';
@@ -120,7 +121,10 @@ export async function main(argv: readonly string[]): Promise<number> {
   } catch (err) {
     if (isAgentryError(err)) {
       if (parsed.json) {
-        process.stderr.write(JSON.stringify(err.toJSON(), null, 2) + '\n');
+        const json = err.toJSON !== undefined
+          ? err.toJSON()
+          : { code: err.code, message: err.message, phase: err.phase, suggestedFix: err.suggestedFix };
+        process.stderr.write(JSON.stringify(json, null, 2) + '\n');
       } else {
         process.stderr.write(`error [${err.code}]: ${err.message}\n`);
         if (err.suggestedFix !== undefined) process.stderr.write(`  fix: ${err.suggestedFix}\n`);
