@@ -66,7 +66,8 @@ export async function createProject(
 
 function persistMeta(project: HostProject, opts: CreateProjectOpts): HostProject {
   if (opts.meta === undefined) return project;
-  return { ...project, meta: { ...(project.meta ?? {}), ...opts.meta } } as HostProject;
+  const currentMeta = (project as unknown as { meta?: Record<string, unknown> }).meta;
+  return { ...project, meta: { ...(currentMeta ?? {}), ...opts.meta } } as HostProject;
 }
 
 export async function destroyProject(
