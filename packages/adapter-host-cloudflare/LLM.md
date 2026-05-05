@@ -19,7 +19,7 @@ OpenAgentry `HostAdapter` implementation backed by **Cloudflare Pages**.
   `secrets` adapter will provide encrypted storage. Do not put credentials
   through `setEnv` at v0.
 - **`Env` mapping**: `'preview'` → Cloudflare `preview`, `'prod'` →
-  `production`. `'dev'` is rejected with `AgentryError(E_CF_HTTP)` —
+  `production`. `'dev'` is rejected with `AgentryError(E_CF_SCHEMA)` —
   Cloudflare Pages has no local-dev concept.
 - **Idempotent operations** (matches manifest): `createProject` returns the
   existing project if a duplicate name is reported; `setEnv` merges into
@@ -41,7 +41,7 @@ OpenAgentry `HostAdapter` implementation backed by **Cloudflare Pages**.
 
 - API token missing the `Pages:Edit` permission → `E_CF_AUTH` with a
   `suggestedFix` pointing at the Cloudflare token-creation docs.
-- Trying to use a `dev` env → `E_CF_HTTP` with explicit "use preview or prod".
+- Trying to use a `dev` env → `E_CF_SCHEMA` with explicit "use preview or prod".
 - `deploy` called on a `HostProject` constructed without `meta.srcDir` →
   `E_CF_HTTP` with "pass meta.srcDir into createProject".
 - Re-deploying with the same files: Cloudflare server-side dedupes by hash,
