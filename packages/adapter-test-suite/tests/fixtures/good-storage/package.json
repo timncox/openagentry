@@ -1,0 +1,22 @@
+{
+  "name": "fixture-good-storage",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "id": "good-storage",
+    "category": "storage",
+    "protocolVersion": "1",
+    "envVars": [],
+    "fillsSlots": ["storage"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": ["put", "delete"],
+      "queryableState": true
+    }
+  }
+}

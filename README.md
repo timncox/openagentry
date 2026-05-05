@@ -10,14 +10,16 @@ Alpha. Shipped:
 - `@openagentry/core@0.1.0-alpha.1` — public SDK (adapter interfaces, plugin protocol, runtime helpers)
 - `@openagentry/cli@0.1.0-alpha.1` — `agentry` binary + library export of dispatcher/registry
 - `@openagentry/mcp@0.1.0-alpha.0` — `agentry-mcp` meta-MCP server (every CLI command exposed as an MCP tool)
+- `@openagentry/adapter-test-suite@0.1.0-alpha.0` — conformance runner; universal AI-friendliness checks plus host + storage functional suites
 
-Plan D (`@openagentry/adapter-test-suite` — conformance runner) is next.
+Plan E (`@openagentry/adapter-host-cloudflare` — first concrete host adapter) is next.
 
 ## Packages
 
 - [`@openagentry/core`](./packages/core) — adapter interfaces, plugin protocol, runtime helpers
 - [`@openagentry/cli`](./packages/cli) — the `agentry` CLI binary + library
 - [`@openagentry/mcp`](./packages/mcp) — the `agentry-mcp` meta-MCP server
+- [`@openagentry/adapter-test-suite`](./packages/adapter-test-suite) — conformance runner
 
 ## Development
 
