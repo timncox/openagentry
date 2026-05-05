@@ -7,6 +7,7 @@
 // Side-effect imports register the built-in functional suites with the runner.
 import './suites/host.js';
 import './suites/storage.js';
+import './suites/db.js';
 
 export { runSuite, registerFunctionalSuite } from './runner.js';
 export { formatText, formatJson } from './reporter.js';
