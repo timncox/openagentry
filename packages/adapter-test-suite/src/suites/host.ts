@@ -182,7 +182,7 @@ export const hostSuite = async (
       ),
     );
   } else {
-    checks.push(pass('host/structured-errors', seWrap.durationMs, { code: (seWrap.err as { code?: string }).code }));
+    checks.push(pass('host/structured-errors', seWrap.durationMs, { code: seWrap.err.code }));
   }
 
   return checks;

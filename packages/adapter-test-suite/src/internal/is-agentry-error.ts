@@ -12,7 +12,13 @@
  * @module
  */
 
-export function isAgentryError(value: unknown): boolean {
+export interface AgentryErrorLike {
+  name: 'AgentryError';
+  code: string;
+  phase: string;
+}
+
+export function isAgentryError(value: unknown): value is AgentryErrorLike {
   return (
     value !== null &&
     typeof value === 'object' &&
