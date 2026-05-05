@@ -6,7 +6,7 @@ import type {
   LoadedTarget,
   SuiteCtx,
 } from '../src/types.js';
-import type { AdapterCategory, PluginManifest } from '@openagentry/core';
+import type { AdapterCategory, IsoTimestamp, PluginManifest } from '@openagentry/core';
 
 describe('adapter-test-suite types', () => {
   it('CheckResult has the documented shape', () => {
@@ -17,6 +17,9 @@ describe('adapter-test-suite types', () => {
     };
     expect(c.id).toBe('manifest/valid');
     expect(c.status).toBe('pass');
+
+    const s: CheckResult = { id: 'x/y', status: 'skip', durationMs: 0 };
+    expect(s.status).toBe('skip');
   });
 
   it('SuiteResult rolls up counts and lists checks', () => {
@@ -27,8 +30,8 @@ describe('adapter-test-suite types', () => {
       skipped: 0,
       total: 1,
       checks: [{ id: 'manifest/valid', status: 'pass', durationMs: 1 }],
-      startedAt: '2026-05-04T00:00:00Z',
-      finishedAt: '2026-05-04T00:00:01Z',
+      startedAt: '2026-05-04T00:00:00Z' as IsoTimestamp,
+      finishedAt: '2026-05-04T00:00:01Z' as IsoTimestamp,
     };
     expect(r.checks).toHaveLength(1);
   });

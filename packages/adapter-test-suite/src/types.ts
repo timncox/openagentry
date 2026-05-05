@@ -4,7 +4,7 @@
  * @module
  */
 
-import type { AdapterCategory, PluginManifest } from '@openagentry/core';
+import type { AdapterCategory, IsoTimestamp, PluginManifest } from '@openagentry/core';
 
 export type CheckStatus = 'pass' | 'fail' | 'skip';
 
@@ -31,9 +31,9 @@ export interface SuiteResult {
   total: number;
   checks: CheckResult[];
   /** ISO-8601. */
-  startedAt: string;
+  startedAt: IsoTimestamp;
   /** ISO-8601. */
-  finishedAt: string;
+  finishedAt: IsoTimestamp;
 }
 
 export interface RunOpts {
