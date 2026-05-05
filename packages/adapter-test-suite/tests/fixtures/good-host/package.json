@@ -1,0 +1,22 @@
+{
+  "name": "fixture-good-host",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "id": "good-host",
+    "category": "host",
+    "protocolVersion": "1",
+    "envVars": [],
+    "fillsSlots": ["host"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": ["setEnv", "createProject"],
+      "queryableState": true
+    }
+  }
+}
