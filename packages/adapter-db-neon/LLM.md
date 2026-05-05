@@ -59,6 +59,6 @@ NEON_API_KEY=neon_... \
 ```
 
 The integration test creates a real Neon project named
-`oa-conformance-probe-<timestamp>`, runs the universal + db functional
-checks, and leaves the project in place for inspection. If the probe
-project lingers, delete it via the Neon console.
+`oa-conformance-probe` (idempotent — re-runs reuse it), runs the universal
++ db functional checks, and leaves the project in place for inspection. If
+the probe project lingers, delete it via the Neon console.
