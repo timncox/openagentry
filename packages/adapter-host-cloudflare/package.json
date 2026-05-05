@@ -1,0 +1,74 @@
+{
+  "name": "@openagentry/adapter-host-cloudflare",
+  "version": "0.1.0-alpha.0",
+  "description": "OpenAgentry HostAdapter implementation backed by Cloudflare Pages",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "LLM.md",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "vitest run tests/integration",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openagentry/core": "workspace:*",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@openagentry/adapter-test-suite": "workspace:*",
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "openagentry": {
+    "type": "adapter",
+    "category": "host",
+    "id": "host-cloudflare",
+    "protocolVersion": "1",
+    "envVars": [
+      { "name": "CLOUDFLARE_API_TOKEN", "secret": true, "required": true },
+      { "name": "CLOUDFLARE_ACCOUNT_ID", "secret": false, "required": true }
+    ],
+    "fillsSlots": ["host"],
+    "requiresSlots": [],
+    "capabilities": {
+      "deploy": true,
+      "previewDeploys": true,
+      "rollback": true,
+      "cron": false,
+      "logs": "history",
+      "domain": "managed"
+    },
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": ["createProject", "setEnv", "attachDomain", "importState"],
+      "queryableState": true
+    },
+    "llmDocs": "./LLM.md"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
