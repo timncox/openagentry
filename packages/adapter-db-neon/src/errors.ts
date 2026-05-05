@@ -18,7 +18,7 @@ export const NEON_ERROR_CODES = {
   API: 'E_NEON_API',
 } as const;
 
-const ADAPTER_ID = 'db-neon';
+export const ADAPTER_ID = 'db-neon';
 
 const AUTH_DOC = 'https://neon.tech/docs/manage/api-keys';
 
