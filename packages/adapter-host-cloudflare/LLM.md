@@ -59,4 +59,4 @@ CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... \
 The integration test creates a real Pages project named
 `oa-conformance-probe-<timestamp>`, sets a probe env var, exports + imports,
 and (optionally) cleans up. If the probe project lingers, delete it via the
-Cloudflare dashboard or with the included cleanup snippet in the test.
+Cloudflare dashboard.
