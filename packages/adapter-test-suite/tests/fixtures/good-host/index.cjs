@@ -95,5 +95,7 @@ const adapter = {
   },
 };
 
+// Exposed twice: `module.exports` for `require()` callers, `module.exports.default`
+// so dynamic `import()` from ESM picks up the adapter as the default export.
 module.exports = adapter;
 module.exports.default = adapter;

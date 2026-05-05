@@ -25,13 +25,27 @@ describe('loadTarget', () => {
     expect(mod.default.id).toBe('good-host');
   });
 
-  it('throws AgentryError when target dir does not exist', async () => {
-    await expect(loadTarget('/nonexistent/path/xyz')).rejects.toBeInstanceOf(AgentryError);
+  it('throws AgentryError with E_TARGET_NOT_FOUND when target dir does not exist', async () => {
+    await expect(loadTarget('/nonexistent/path/xyz')).rejects.toMatchObject({
+      name: 'AgentryError',
+      code: 'E_TARGET_NOT_FOUND',
+    });
   });
 
-  it('throws AgentryError when package.json has no openagentry block', async () => {
+  it('throws AgentryError with E_TARGET_NOT_DIR when target is a file, not a directory', async () => {
+    const filePath = join(__dirname, '..', 'package.json');
+    await expect(loadTarget(filePath)).rejects.toMatchObject({
+      name: 'AgentryError',
+      code: 'E_TARGET_NOT_DIR',
+    });
+  });
+
+  it('throws AgentryError with E_TARGET_NO_MANIFEST when package.json has no openagentry block', async () => {
     // The cli package has no openagentry block — reuse it as a negative case.
     const cliPkg = join(__dirname, '..', '..', 'cli');
-    await expect(loadTarget(cliPkg)).rejects.toBeInstanceOf(AgentryError);
+    await expect(loadTarget(cliPkg)).rejects.toMatchObject({
+      name: 'AgentryError',
+      code: 'E_TARGET_NO_MANIFEST',
+    });
   });
 });

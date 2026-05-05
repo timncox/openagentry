@@ -14,3 +14,4 @@ In-memory test fixture. NOT for production. Implements every `HostAdapter` opera
 - This adapter is NOT persistent — restarts wipe all state.
 - `attachDomain` always returns `status: "active"` synchronously; no DNS verification.
 - `logs` returns an empty async iterable.
+- CJS adapters must export the adapter both as `module.exports = adapter` AND `module.exports.default = adapter` so ESM dynamic-import sees a `.default`. TypeScript adapters using `export default` get this for free.

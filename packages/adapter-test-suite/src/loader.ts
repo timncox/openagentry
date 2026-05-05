@@ -30,11 +30,21 @@ export async function loadTarget(target: string): Promise<LoadedTarget> {
     }
   } catch (err) {
     if (err instanceof AgentryError) throw err;
+    const errno = (err as NodeJS.ErrnoException | undefined)?.code;
+    if (errno === 'ENOENT') {
+      throw new AgentryError({
+        code: 'E_TARGET_NOT_FOUND',
+        message: `Target directory ${packageDir} does not exist.`,
+        phase: 'init',
+        context: { target: packageDir },
+        cause: err,
+      });
+    }
     throw new AgentryError({
-      code: 'E_TARGET_NOT_FOUND',
-      message: `Target directory ${packageDir} does not exist.`,
+      code: 'E_TARGET_STAT_FAILED',
+      message: `Failed to stat target ${packageDir}: ${(err as Error)?.message ?? String(err)}.`,
       phase: 'init',
-      context: { target: packageDir },
+      context: { target: packageDir, errno },
       cause: err,
     });
   }
@@ -61,6 +71,7 @@ export async function loadTarget(target: string): Promise<LoadedTarget> {
       code: 'E_TARGET_BAD_PACKAGE_JSON',
       message: `${pkgPath} is not valid JSON.`,
       phase: 'validate',
+      context: { pkgPath },
       cause: err,
     });
   }
