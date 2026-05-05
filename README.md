@@ -12,8 +12,9 @@ Alpha. Shipped:
 - `@openagentry/mcp@0.1.0-alpha.0` — `agentry-mcp` meta-MCP server (every CLI command exposed as an MCP tool)
 - `@openagentry/adapter-test-suite@0.1.0-alpha.0` — conformance runner; universal AI-friendliness checks plus host + storage functional suites
 - `@openagentry/adapter-host-cloudflare@0.1.0-alpha.0` — first concrete HostAdapter (Cloudflare Pages)
+- `@openagentry/adapter-db-neon@0.1.0-alpha.0` — first concrete DatabaseAdapter (Neon Postgres)
 
-Plan F (`@openagentry/adapter-db-neon` — first concrete DatabaseAdapter) is next.
+Plan G (`@openagentry/adapter-auth-nextauth` — first concrete AuthAdapter) is next.
 
 ## Packages
 
@@ -22,6 +23,7 @@ Plan F (`@openagentry/adapter-db-neon` — first concrete DatabaseAdapter) is ne
 - [`@openagentry/mcp`](./packages/mcp) — the `agentry-mcp` meta-MCP server
 - [`@openagentry/adapter-test-suite`](./packages/adapter-test-suite) — conformance runner
 - [`@openagentry/adapter-host-cloudflare`](./packages/adapter-host-cloudflare) — Cloudflare Pages HostAdapter
+- [`@openagentry/adapter-db-neon`](./packages/adapter-db-neon) — Neon Postgres DatabaseAdapter
 
 ## Development
 
