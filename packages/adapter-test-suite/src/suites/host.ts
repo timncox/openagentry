@@ -10,22 +10,7 @@
 import type { Env, HostAdapter } from '@openagentry/core';
 import type { CheckResult, LoadedTarget, SuiteCtx } from '../types.js';
 import { registerFunctionalSuite } from '../runner.js';
-
-/**
- * Duck-type check for AgentryError that works across CJS/ESM module boundaries.
- * The fixture may load @openagentry/core via CJS (require) while the suite loads
- * it via ESM (import), producing two different class objects. instanceof fails
- * across that boundary, so we inspect the error's structural shape instead.
- */
-function isAgentryError(value: unknown): value is { code: string; phase: string; name: string } {
-  if (value === null || typeof value !== 'object') return false;
-  const e = value as Record<string, unknown>;
-  return (
-    e['name'] === 'AgentryError' &&
-    typeof e['code'] === 'string' &&
-    typeof e['phase'] === 'string'
-  );
-}
+import { isAgentryError } from '../internal/is-agentry-error.js';
 
 interface RunWrap<T> {
   ok: boolean;
@@ -197,7 +182,7 @@ export const hostSuite = async (
       ),
     );
   } else {
-    checks.push(pass('host/structured-errors', seWrap.durationMs, { code: seWrap.err.code }));
+    checks.push(pass('host/structured-errors', seWrap.durationMs, { code: (seWrap.err as { code?: string }).code }));
   }
 
   return checks;
