@@ -11,46 +11,14 @@ import type { StorageAdapter } from '@openagentry/core';
 import type { CheckResult, LoadedTarget, SuiteCtx } from '../types.js';
 import { registerFunctionalSuite } from '../runner.js';
 import { isAgentryError } from '../internal/is-agentry-error.js';
-
-interface RunWrap<T> {
-  ok: boolean;
-  result?: T;
-  err?: unknown;
-  durationMs: number;
-}
-
-async function timed<T>(ctx: SuiteCtx, fn: () => Promise<T>): Promise<RunWrap<T>> {
-  const start = ctx.now();
-  try {
-    const result = await fn();
-    return { ok: true, result, durationMs: Math.max(0, ctx.now() - start) };
-  } catch (err) {
-    return { ok: false, err, durationMs: Math.max(0, ctx.now() - start) };
-  }
-}
-
-function fail(id: string, message: string, durationMs: number): CheckResult {
-  return { id, status: 'fail', message, durationMs };
-}
-
-function pass(id: string, durationMs: number): CheckResult {
-  return { id, status: 'pass', durationMs };
-}
-
-function getAdapter(target: LoadedTarget): StorageAdapter | undefined {
-  const mod = target.module as { default?: unknown };
-  const candidate = mod.default;
-  if (candidate === null || typeof candidate !== 'object') return undefined;
-  if ((candidate as { category?: string }).category !== 'storage') return undefined;
-  return candidate as StorageAdapter;
-}
+import { timed, fail, pass, getAdapterDefault } from '../internal/suite-helpers.js';
 
 export const storageSuite = async (
   target: LoadedTarget,
   ctx: SuiteCtx,
 ): Promise<CheckResult[]> => {
   const checks: CheckResult[] = [];
-  const adapter = getAdapter(target);
+  const adapter = getAdapterDefault<StorageAdapter>(target, 'storage');
   if (adapter === undefined) {
     return [
       fail(

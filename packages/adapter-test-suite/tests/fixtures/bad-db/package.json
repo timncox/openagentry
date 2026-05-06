@@ -1,0 +1,22 @@
+{
+  "name": "fixture-bad-db",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "id": "bad-db",
+    "category": "db",
+    "protocolVersion": ">=1",
+    "envVars": [],
+    "fillsSlots": ["db"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": true
+    }
+  }
+}
