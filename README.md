@@ -15,6 +15,7 @@ Alpha. Shipped:
 - `@openagentry/adapter-db-neon@0.1.0-alpha.0` — first concrete DatabaseAdapter (Neon Postgres)
 - `@openagentry/adapter-auth-nextauth@0.1.0-alpha.0` — first concrete AuthAdapter (next-auth v4)
 - `@openagentry/adapter-llm-cli@0.1.0-alpha.0` — operator/CLI flavor `LlmAdapter` shelling out to `claude` / `codex` / `gemini`. No API keys at the adapter level.
+- `@openagentry/adapter-wiki-fs@0.1.0-alpha.0` — first concrete `WikiAdapter` (local filesystem, markdown + YAML frontmatter; no Obsidian dep)
 
 ## Packages
 
@@ -26,6 +27,7 @@ Alpha. Shipped:
 - [`@openagentry/adapter-db-neon`](./packages/adapter-db-neon) — Neon Postgres DatabaseAdapter
 - [`@openagentry/adapter-auth-nextauth`](./packages/adapter-auth-nextauth) — next-auth v4 AuthAdapter
 - [`@openagentry/adapter-llm-cli`](./packages/adapter-llm-cli) — operator/CLI LlmAdapter (`claude` / `codex` / `gemini`)
+- [`@openagentry/adapter-wiki-fs`](./packages/adapter-wiki-fs) — local-fs WikiAdapter (markdown + YAML frontmatter)
 
 ## Development
 

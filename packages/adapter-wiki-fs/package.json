@@ -62,7 +62,7 @@
     "aiFriendly": {
       "structuredErrors": true,
       "dryRun": false,
-      "idempotent": ["write", "append"],
+      "idempotent": ["write"],
       "queryableState": true
     },
     "llmDocs": "./LLM.md"
