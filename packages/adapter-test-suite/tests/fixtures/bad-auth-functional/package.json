@@ -1,0 +1,22 @@
+{
+  "name": "fixture-bad-auth-functional",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "id": "bad-auth-functional",
+    "category": "auth",
+    "protocolVersion": ">=1",
+    "envVars": [],
+    "fillsSlots": ["auth"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": true
+    }
+  }
+}
