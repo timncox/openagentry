@@ -4,7 +4,7 @@
   "description": "OpenAgentry AuthAdapter implementation backed by next-auth v4",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {

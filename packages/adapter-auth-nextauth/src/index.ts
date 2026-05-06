@@ -9,8 +9,20 @@
  */
 
 import type { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import * as _credentialsModule from 'next-auth/providers/credentials';
 import { createNextAuthAuthAdapter } from './adapter.js';
+
+// next-auth v4 ships a CJS module with exports.default = Credentials.
+// tsup's __toESM shim can produce an object rather than the function itself
+// depending on whether isNodeMode is set, so we normalise here.
+const _CredentialsFn = _credentialsModule as unknown as Record<string, unknown>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CredentialsProvider: (opts: any) => any =
+  typeof _credentialsModule === 'function'
+    ? (_credentialsModule as unknown as (opts: unknown) => unknown)
+    : typeof (_CredentialsFn['default']) === 'function'
+      ? (_CredentialsFn['default'] as (opts: unknown) => unknown)
+      : ((_CredentialsFn['default'] as Record<string, unknown>)?.['default'] as (opts: unknown) => unknown);
 
 export {
   createNextAuthAuthAdapter,
