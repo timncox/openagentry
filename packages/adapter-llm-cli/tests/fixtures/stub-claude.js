@@ -2,8 +2,8 @@
 'use strict';
 
 // Stub `claude` CLI for conformance tests. Recognizes a small set of
-// hardcoded prompts; emits stream-json output that the real claudeDispatch
-// can parse.
+// hardcoded prompts; emits stream-json output that matches the real
+// Claude Code CLI format (assistant + result events).
 
 const args = process.argv.slice(2);
 
@@ -35,8 +35,11 @@ for (let i = 0; i < args.length; i++) {
 function emitText(text) {
   process.stdout.write(
     JSON.stringify({
-      type: 'content_block_delta',
-      delta: { type: 'text_delta', text },
+      type: 'assistant',
+      message: {
+        model,
+        content: [{ type: 'text', text }],
+      },
     }) + '\n',
   );
 }
@@ -45,6 +48,8 @@ function emitDone(inputTokens, outputTokens) {
   process.stdout.write(
     JSON.stringify({
       type: 'result',
+      subtype: 'success',
+      is_error: false,
       usage: { input_tokens: inputTokens, output_tokens: outputTokens },
     }) + '\n',
   );

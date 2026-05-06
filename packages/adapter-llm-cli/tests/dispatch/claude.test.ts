@@ -40,7 +40,18 @@ describe('claudeDispatch', () => {
     expect(argv).not.toContain('--append-system-prompt');
   });
 
-  it('parseStreamChunk returns text chunk for content_block_delta', () => {
+  it('parseStreamChunk returns text chunk for assistant event (real CLI format)', () => {
+    const line = JSON.stringify({
+      type: 'assistant',
+      message: { content: [{ type: 'text', text: 'hello' }] },
+    });
+    expect(claudeDispatch.parseStreamChunk(line)).toEqual({
+      type: 'text',
+      text: 'hello',
+    });
+  });
+
+  it('parseStreamChunk returns text chunk for content_block_delta (legacy/stub format)', () => {
     const line = JSON.stringify({
       type: 'content_block_delta',
       delta: { type: 'text_delta', text: 'hello' },
@@ -72,8 +83,8 @@ describe('claudeDispatch', () => {
 
   it('parseFinalUsage walks back to find result block', () => {
     const stdout = [
-      JSON.stringify({ type: 'content_block_delta', delta: { type: 'text_delta', text: 'hi' } }),
-      JSON.stringify({ type: 'result', usage: { input_tokens: 7, output_tokens: 3 } }),
+      JSON.stringify({ type: 'assistant', message: { content: [{ type: 'text', text: 'hi' }] } }),
+      JSON.stringify({ type: 'result', subtype: 'success', usage: { input_tokens: 7, output_tokens: 3 } }),
     ].join('\n');
     expect(claudeDispatch.parseFinalUsage(stdout, '')).toEqual({
       inputTokens: 7,
@@ -89,6 +100,7 @@ describe('claudeDispatch', () => {
     expect(claudeDispatch.authErrorPattern.test('Please run claude login')).toBe(true);
     expect(claudeDispatch.authErrorPattern.test('Error: not authenticated')).toBe(true);
     expect(claudeDispatch.authErrorPattern.test('Invalid API key')).toBe(true);
+    expect(claudeDispatch.authErrorPattern.test('Not logged in · Please run /login')).toBe(true);
     expect(claudeDispatch.authErrorPattern.test('some other error')).toBe(false);
   });
 });
