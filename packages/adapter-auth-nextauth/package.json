@@ -1,0 +1,70 @@
+{
+  "name": "@openagentry/adapter-auth-nextauth",
+  "version": "0.1.0-alpha.0",
+  "description": "OpenAgentry AuthAdapter implementation backed by next-auth v4",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "LLM.md",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "vitest run tests/integration",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openagentry/core": "workspace:*",
+    "next-auth": "^4.24.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@openagentry/adapter-test-suite": "workspace:*",
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "openagentry": {
+    "type": "adapter",
+    "category": "auth",
+    "id": "nextauth",
+    "protocolVersion": "1",
+    "envVars": [
+      { "name": "NEXTAUTH_SECRET", "secret": true, "required": false }
+    ],
+    "fillsSlots": ["auth"],
+    "requiresSlots": [],
+    "capabilities": {
+      "sessionStrategies": "jwt+database",
+      "providers": "any"
+    },
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": true
+    },
+    "llmDocs": "./LLM.md"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
