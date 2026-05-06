@@ -9,6 +9,7 @@ import './suites/host.js';
 import './suites/storage.js';
 import './suites/db.js';
 import './suites/auth.js';
+import './suites/llm.js';
 
 export { runSuite, registerFunctionalSuite } from './runner.js';
 export { formatText, formatJson } from './reporter.js';
