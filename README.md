@@ -13,8 +13,7 @@ Alpha. Shipped:
 - `@openagentry/adapter-test-suite@0.1.0-alpha.0` — conformance runner; universal AI-friendliness checks plus host + storage functional suites
 - `@openagentry/adapter-host-cloudflare@0.1.0-alpha.0` — first concrete HostAdapter (Cloudflare Pages)
 - `@openagentry/adapter-db-neon@0.1.0-alpha.0` — first concrete DatabaseAdapter (Neon Postgres)
-
-Plan G (`@openagentry/adapter-auth-nextauth` — first concrete AuthAdapter) is next.
+- `@openagentry/adapter-auth-nextauth@0.1.0-alpha.0` — first concrete AuthAdapter (next-auth v4)
 
 ## Packages
 
@@ -24,6 +23,7 @@ Plan G (`@openagentry/adapter-auth-nextauth` — first concrete AuthAdapter) is 
 - [`@openagentry/adapter-test-suite`](./packages/adapter-test-suite) — conformance runner
 - [`@openagentry/adapter-host-cloudflare`](./packages/adapter-host-cloudflare) — Cloudflare Pages HostAdapter
 - [`@openagentry/adapter-db-neon`](./packages/adapter-db-neon) — Neon Postgres DatabaseAdapter
+- [`@openagentry/adapter-auth-nextauth`](./packages/adapter-auth-nextauth) — next-auth v4 AuthAdapter
 
 ## Development
 
