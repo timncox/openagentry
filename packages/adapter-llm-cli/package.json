@@ -53,7 +53,7 @@
     "fillsSlots": ["llm"],
     "requiresSlots": [],
     "capabilities": {
-      "supportedClis": ["claude", "codex", "gemini"],
+      "supportedClis": "claude,codex,gemini",
       "streaming": true,
       "operatorOnly": true
     },
