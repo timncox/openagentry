@@ -5,8 +5,10 @@
  */
 
 import type { LlmGenerateOpts, LlmModel, LlmStreamChunk } from '@openagentry/core';
+import { llmCliError, LLM_CLI_ERROR_CODES } from '../errors.js';
 import { claudeDispatch } from './claude.js';
 import { codexDispatch } from './codex.js';
+import { geminiDispatch } from './gemini.js';
 
 export interface CliDispatch {
   bin: 'claude' | 'codex' | 'gemini';
@@ -23,6 +25,10 @@ export interface CliDispatch {
 export function getDispatch(cli: 'claude' | 'codex' | 'gemini'): CliDispatch {
   if (cli === 'claude') return claudeDispatch;
   if (cli === 'codex') return codexDispatch;
-  // gemini lands in Task 11.
-  throw new Error(`Dispatch for cli="${cli}" not yet implemented.`);
+  if (cli === 'gemini') return geminiDispatch;
+  throw llmCliError({
+    code: LLM_CLI_ERROR_CODES.SCHEMA,
+    message: `Unknown cli="${cli as string}". Use one of: claude, codex, gemini.`,
+    phase: 'init',
+  });
 }
