@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0-alpha.0 (unreleased)
+## 0.1.0-alpha.0 — 2026-05-06
 
 - First release. Implements `LlmAdapter` from `@openagentry/core` against
   local `claude` / `codex` / `gemini` CLIs (operator flavor).
