@@ -1,0 +1,22 @@
+{
+  "name": "fixture-bad-wiki-functional",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "id": "bad-wiki-functional",
+    "category": "wiki",
+    "protocolVersion": ">=1",
+    "envVars": [],
+    "fillsSlots": ["wiki"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": true
+    }
+  }
+}

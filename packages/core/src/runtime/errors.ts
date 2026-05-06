@@ -10,6 +10,7 @@
 
 export type AgentryErrorPhase =
   | 'init'
+  | 'append'
   | 'auth'
   | 'createProject'
   | 'destroyProject'
@@ -26,6 +27,9 @@ export type AgentryErrorPhase =
   | 'attachDomain'
   | 'detachDomain'
   | 'logs'
+  | 'list'
+  | 'read'
+  | 'write'
   | 'export'
   | 'import'
   | 'transfer'

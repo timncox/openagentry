@@ -1,0 +1,73 @@
+{
+  "name": "@openagentry/adapter-wiki-fs",
+  "version": "0.1.0-alpha.0",
+  "description": "OpenAgentry WikiAdapter implementation using local markdown + YAML frontmatter on the filesystem",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "LLM.md",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openagentry/core": "workspace:*",
+    "diff": "^5.2.0",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@openagentry/adapter-test-suite": "workspace:*",
+    "@types/diff": "^5.2.0",
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "openagentry": {
+    "type": "adapter",
+    "category": "wiki",
+    "id": "wiki-fs",
+    "protocolVersion": "1",
+    "envVars": [
+      { "name": "OA_WIKI_FS_WORKSPACE_PATH", "secret": false, "required": false },
+      { "name": "OA_WIKI_FS_PROJECT_PATH", "secret": false, "required": false }
+    ],
+    "fillsSlots": ["wiki"],
+    "requiresSlots": [],
+    "capabilities": {
+      "search": "naive-substring",
+      "frontmatter": true,
+      "atomicWrites": true
+    },
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": ["write"],
+      "queryableState": true
+    },
+    "llmDocs": "./LLM.md"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
