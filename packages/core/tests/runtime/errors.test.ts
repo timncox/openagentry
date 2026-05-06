@@ -56,3 +56,13 @@ describe('AgentryError', () => {
     expect(isAgentryError(null)).toBe(false);
   });
 });
+
+describe('AgentryErrorPhase — wiki phases', () => {
+  it('accepts list/read/write/append as phases', () => {
+    // typecheck-only; if the phase string is rejected, tsc fails.
+    new AgentryError({ code: 'X', message: 'm', phase: 'list' });
+    new AgentryError({ code: 'X', message: 'm', phase: 'read' });
+    new AgentryError({ code: 'X', message: 'm', phase: 'write' });
+    new AgentryError({ code: 'X', message: 'm', phase: 'append' });
+  });
+});
