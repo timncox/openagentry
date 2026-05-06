@@ -2,8 +2,8 @@
  * connectionString — fetches the Neon connection URI for the branch
  * corresponding to the requested env.
  *
- * Phase string 'connectionString' is not in core's AgentryErrorPhase union;
- * we cast at the module level (Plan E-style workaround).
+ * Phase string 'connectionString' is now part of core's AgentryErrorPhase
+ * union (added by Plan H); no cast workaround needed.
  *
  * @module
  */
@@ -18,7 +18,7 @@ import type { NeonApi } from '../client.js';
 import { ADAPTER_ID, NEON_ERROR_CODES } from '../errors.js';
 import type { NeonBranchListResponse, NeonConnectionUriResponse } from '../types.js';
 
-const PHASE = 'connectionString' as AgentryErrorPhase;
+const PHASE: AgentryErrorPhase = 'connectionString';
 
 function envToBranchName(env: Env): 'main' | 'preview' | 'dev' {
   switch (env) {

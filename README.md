@@ -14,6 +14,7 @@ Alpha. Shipped:
 - `@openagentry/adapter-host-cloudflare@0.1.0-alpha.0` — first concrete HostAdapter (Cloudflare Pages)
 - `@openagentry/adapter-db-neon@0.1.0-alpha.0` — first concrete DatabaseAdapter (Neon Postgres)
 - `@openagentry/adapter-auth-nextauth@0.1.0-alpha.0` — first concrete AuthAdapter (next-auth v4)
+- `@openagentry/adapter-llm-cli@0.1.0-alpha.0` — operator/CLI flavor `LlmAdapter` shelling out to `claude` / `codex` / `gemini`. No API keys at the adapter level.
 
 ## Packages
 
@@ -24,6 +25,7 @@ Alpha. Shipped:
 - [`@openagentry/adapter-host-cloudflare`](./packages/adapter-host-cloudflare) — Cloudflare Pages HostAdapter
 - [`@openagentry/adapter-db-neon`](./packages/adapter-db-neon) — Neon Postgres DatabaseAdapter
 - [`@openagentry/adapter-auth-nextauth`](./packages/adapter-auth-nextauth) — next-auth v4 AuthAdapter
+- [`@openagentry/adapter-llm-cli`](./packages/adapter-llm-cli) — operator/CLI LlmAdapter (`claude` / `codex` / `gemini`)
 
 ## Development
 

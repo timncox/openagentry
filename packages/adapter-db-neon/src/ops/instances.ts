@@ -1,10 +1,9 @@
 /**
  * createInstance / destroyInstance / getInstanceBySlug.
  *
- * Phase strings 'createInstance' and 'destroyInstance' are not in core's
- * AgentryErrorPhase union (which is host-adapter-centric); we cast at call
- * sites. This mirrors Plan E's `as HostProject` cast workaround for
- * structural type gaps in core that pre-date db-adapter work.
+ * Phase strings 'createInstance' and 'destroyInstance' are now part of
+ * core's AgentryErrorPhase union (added by Plan H); no cast workaround
+ * needed.
  *
  * @module
  */
@@ -28,8 +27,8 @@ import type {
 
 const SLUG_PREFIX = 'oa-';
 
-const PHASE_CREATE = 'createInstance' as AgentryErrorPhase;
-const PHASE_DESTROY = 'destroyInstance' as AgentryErrorPhase;
+const PHASE_CREATE: AgentryErrorPhase = 'createInstance';
+const PHASE_DESTROY: AgentryErrorPhase = 'destroyInstance';
 
 function projectToInstance(project: NeonProject, slug: string): DatabaseInstance {
   return {

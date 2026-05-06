@@ -1,0 +1,22 @@
+{
+  "name": "fixture-good-llm-functional",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "id": "good-llm-functional",
+    "category": "llm",
+    "protocolVersion": ">=1",
+    "envVars": [],
+    "fillsSlots": ["llm"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": true
+    }
+  }
+}
