@@ -1,0 +1,22 @@
+{
+  "name": "fixture-good-auth",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "id": "good-auth",
+    "category": "auth",
+    "protocolVersion": ">=1",
+    "envVars": [],
+    "fillsSlots": ["auth"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": true
+    }
+  }
+}

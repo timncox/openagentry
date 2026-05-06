@@ -38,6 +38,7 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "execa": "^9.0.0",
+    "next-auth": "^4.24.0",
     "tsup": "^8.0.0",
     "typescript": "^5.5.0",
     "vitest": "^2.0.0"
