@@ -6,6 +6,7 @@
 
 import type { LlmGenerateOpts, LlmModel, LlmStreamChunk } from '@openagentry/core';
 import { claudeDispatch } from './claude.js';
+import { codexDispatch } from './codex.js';
 
 export interface CliDispatch {
   bin: 'claude' | 'codex' | 'gemini';
@@ -21,6 +22,7 @@ export interface CliDispatch {
 
 export function getDispatch(cli: 'claude' | 'codex' | 'gemini'): CliDispatch {
   if (cli === 'claude') return claudeDispatch;
-  // codex and gemini land in Tasks 10, 11.
+  if (cli === 'codex') return codexDispatch;
+  // gemini lands in Task 11.
   throw new Error(`Dispatch for cli="${cli}" not yet implemented.`);
 }
