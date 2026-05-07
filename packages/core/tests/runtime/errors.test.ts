@@ -77,3 +77,14 @@ describe('AgentryErrorPhase storage extensions', () => {
     expect(err.phase).toBe('delete');
   });
 });
+
+describe('AgentryErrorPhase email extensions', () => {
+  it('accepts "send" as a valid phase', () => {
+    const err = new AgentryError({
+      code: 'E_TEST',
+      message: 'test',
+      phase: 'send',
+    });
+    expect(err.phase).toBe('send');
+  });
+});
