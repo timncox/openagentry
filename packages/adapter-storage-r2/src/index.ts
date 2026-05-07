@@ -27,7 +27,7 @@ function buildFromEnv(): R2StorageAdapter {
   const result = readEnvConfig(process.env);
   if (result.kind === 'missing') {
     throw r2Error({
-      code: R2_ERROR_CODES.NOT_FOUND,
+      code: R2_ERROR_CODES.CONFIG_INVALID,
       message: `Missing required env vars: ${result.missing.join(', ')}`,
       phase: 'init',
       suggestedFix: `Set ${result.missing.join(', ')} in your environment, or pass a config to createR2StorageAdapter() directly.`,
@@ -36,7 +36,7 @@ function buildFromEnv(): R2StorageAdapter {
   if (result.kind === 'invalid') {
     const cause = result.error instanceof Error ? result.error.message : String(result.error);
     throw r2Error({
-      code: R2_ERROR_CODES.NOT_FOUND,
+      code: R2_ERROR_CODES.CONFIG_INVALID,
       message: `OA_R2_* env vars failed validation: ${cause}`,
       phase: 'init',
       suggestedFix:

@@ -68,7 +68,7 @@ export async function putOp(
     // cfg.publicBaseUrl is narrowed to string by the guard above (we threw if undefined)
     url = publicUrl(cfg.publicBaseUrl!, key);
   } else {
-    url = await presignGetUrl(client, key, cfg.presignTtlSeconds ?? 3600);
+    url = await presignGetUrl(client, key, cfg.presignTtlSeconds);
   }
 
   return {

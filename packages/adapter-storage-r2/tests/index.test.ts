@@ -35,7 +35,7 @@ describe('default export (lazy from env)', () => {
     expect(mod.default).toBeDefined();
   });
 
-  it('throws AgentryError listing missing vars on first method call', async () => {
+  it('throws E_R2_CONFIG_INVALID listing missing vars on first method call', async () => {
     const { isAgentryError } = await import('@openagentry/core');
     const mod = await import('../src/index.js');
     try {
@@ -43,6 +43,7 @@ describe('default export (lazy from env)', () => {
       throw new Error('should have thrown');
     } catch (err) {
       expect(isAgentryError(err)).toBe(true);
+      expect((err as { code: string }).code).toBe('E_R2_CONFIG_INVALID');
       expect((err as Error).message).toContain('OA_R2_ACCOUNT_ID');
     }
   });

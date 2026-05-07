@@ -1,6 +1,11 @@
 /**
  * Zod-validated configuration for the R2 storage adapter.
  *
+ * Optional fields with a sensible runtime default (region, endpoint,
+ * presignTtlSeconds) use `.default(...)` so that `R2StorageConfig` —
+ * derived via `z.infer<typeof r2StorageConfigSchema>` — has them typed as
+ * non-optional. That removes the need for `?? fallback` guards in op files.
+ *
  * @module
  */
 
@@ -17,31 +22,34 @@ export const r2StorageConfigSchema = z
       .string()
       .min(3)
       .max(63)
-      .regex(/^[a-z0-9][a-z0-9-]*[a-z0-9]$/, 'bucket must be lowercase alphanumeric with optional internal hyphens, 3-63 chars'),
+      .regex(
+        /^[a-z0-9](?:[a-z0-9]|-(?!-))*[a-z0-9]$/,
+        'bucket must be lowercase alphanumeric with optional internal hyphens (no consecutive hyphens), 3-63 chars',
+      ),
     publicBaseUrl: z.string().url().optional(),
-    presignTtlSeconds: z.number().int().min(60).max(604800).optional(),
+    presignTtlSeconds: z.number().int().min(60).max(604800).default(3600),
     endpoint: z.string().url().optional(),
-    region: z.string().optional(),
+    region: z.string().default('auto'),
   })
   .strict();
 
 export type R2StorageConfigInput = z.input<typeof r2StorageConfigSchema>;
-export type R2StorageConfigParsed = z.output<typeof r2StorageConfigSchema>;
 
-export interface R2StorageConfig extends Required<Pick<R2StorageConfigParsed, 'accountId' | 'accessKeyId' | 'secretAccessKey' | 'bucket' | 'region' | 'endpoint' | 'presignTtlSeconds'>> {
-  publicBaseUrl?: string;
+/**
+ * Fully-resolved R2 adapter configuration. All fields are required (no
+ * `undefined`), including `endpoint` which is derived from `accountId` when
+ * not supplied by the caller.
+ */
+export interface R2StorageConfig extends z.infer<typeof r2StorageConfigSchema> {
+  /** Always a valid URL; defaults to `https://<accountId>.r2.cloudflarestorage.com`. */
+  endpoint: string;
 }
 
 export function parseR2StorageConfig(input: unknown): R2StorageConfig {
   const parsed = r2StorageConfigSchema.parse(input);
   return {
-    accountId: parsed.accountId,
-    accessKeyId: parsed.accessKeyId,
-    secretAccessKey: parsed.secretAccessKey,
-    bucket: parsed.bucket,
-    region: parsed.region ?? 'auto',
+    ...parsed,
     endpoint: parsed.endpoint ?? `https://${parsed.accountId}.r2.cloudflarestorage.com`,
-    presignTtlSeconds: parsed.presignTtlSeconds ?? 3600,
-    ...(parsed.publicBaseUrl !== undefined && { publicBaseUrl: parsed.publicBaseUrl }),
-  };
+  } as R2StorageConfig;
 }
+
