@@ -11,6 +11,7 @@ import './suites/domain.js';
 import './suites/email.js';
 import './suites/host.js';
 import './suites/llm.js';
+import './suites/repo.js';
 import './suites/storage.js';
 import './suites/wiki.js';
 
