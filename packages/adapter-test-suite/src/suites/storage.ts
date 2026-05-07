@@ -75,8 +75,9 @@ export const storageSuite = async (
     );
   }
 
-  // storage/structured-errors — empty key must throw AgentryError.
+  // storage/structured-errors — empty key must throw AgentryError with E_-prefixed code and a storage-relevant phase.
   const seWrap = await timed(ctx, () => adapter.put('', 'body'));
+  const STORAGE_PHASES = new Set(['write', 'read', 'delete', 'list']);
   if (seWrap.ok) {
     checks.push(
       fail(
@@ -90,6 +91,22 @@ export const storageSuite = async (
       fail(
         'storage/structured-errors',
         `put("", body) threw a non-AgentryError (${(seWrap.err as Error)?.constructor?.name ?? typeof seWrap.err}). All adapter failures must be AgentryError.`,
+        seWrap.durationMs,
+      ),
+    );
+  } else if (typeof seWrap.err.code !== 'string' || !seWrap.err.code.startsWith('E_')) {
+    checks.push(
+      fail(
+        'storage/structured-errors',
+        `put("", body) threw AgentryError with non-conformant code "${String(seWrap.err.code)}". Codes must be non-empty strings prefixed with "E_".`,
+        seWrap.durationMs,
+      ),
+    );
+  } else if (!STORAGE_PHASES.has(seWrap.err.phase)) {
+    checks.push(
+      fail(
+        'storage/structured-errors',
+        `put("", body) threw AgentryError with phase "${seWrap.err.phase}", not one of write/read/delete/list. Storage adapters classify failures using these four phases.`,
         seWrap.durationMs,
       ),
     );

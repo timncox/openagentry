@@ -16,7 +16,7 @@ const adapter = {
       throw new AgentryError({
         code: 'E_STORAGE_BAD_KEY',
         message: 'put() requires a non-empty key.',
-        phase: 'init',
+        phase: 'write',
         adapter: 'good-storage',
         suggestedFix: 'Pass a non-empty string as the first argument.',
       });
