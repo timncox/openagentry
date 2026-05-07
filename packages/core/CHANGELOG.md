@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2026-05-06)
+
+- Add `'send'` to `AgentryErrorPhase` union for email adapters.
+
 ## 0.1.0-alpha.1 — 2026-05-04
 
 Pre-publish polish on top of alpha.0.

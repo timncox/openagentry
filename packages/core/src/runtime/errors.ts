@@ -36,6 +36,7 @@ export type AgentryErrorPhase =
   | 'transfer'
   | 'install'
   | 'search'
+  | 'send'
   | 'validate'
   | 'unknown';
 
