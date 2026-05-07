@@ -4,7 +4,7 @@
   "description": "OpenAgentry EmailAdapter implementation for Resend",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -46,7 +46,7 @@
       "structuredErrors": true,
       "dryRun": false,
       "idempotent": [],
-      "queryableState": false
+      "queryableState": true
     },
     "llmDocs": "./LLM.md"
   },
