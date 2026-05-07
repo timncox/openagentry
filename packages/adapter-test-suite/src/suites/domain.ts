@@ -13,6 +13,7 @@ import type { CheckResult, LoadedTarget, SuiteCtx } from '../types.js';
 import { registerFunctionalSuite } from '../runner.js';
 import { isAgentryError } from '../internal/is-agentry-error.js';
 import { timed, fail, pass, getAdapterDefault } from '../internal/suite-helpers.js';
+import { randomUUID } from 'node:crypto';
 
 /**
  * Phases a domain adapter is allowed to use.
@@ -78,6 +79,76 @@ export const domainSuite = async (
     );
   } else {
     checks.push(pass('domain/structured-errors', seWrap.durationMs));
+  }
+
+  // domain/dns-roundtrip — opt-in. Set OA_DOMAIN_CONFORMANCE_TEST_DOMAIN to a
+  // domain in your account that you consent to mutate (e.g. "example.com").
+  // The check adds a TXT record, verifies it is present, removes it, and
+  // verifies it is absent. A try/finally ensures cleanup on assertion failure.
+  const testDomain = process.env.OA_DOMAIN_CONFORMANCE_TEST_DOMAIN;
+  if (testDomain !== undefined && testDomain !== '') {
+    const uniqueValue = `oa-conformance-${randomUUID()}`;
+    const recordName = '_oa-conformance';
+    const recordType = 'TXT' as const;
+
+    const roundtripWrap = await timed(ctx, async () => {
+      // (a) Add the TXT record.
+      await adapter.setRecord(testDomain, {
+        type: recordType,
+        name: recordName,
+        value: uniqueValue,
+        ttl: 60,
+      });
+
+      try {
+        // (b) List records and assert the new record is present.
+        const afterSet = await adapter.listRecords(testDomain);
+        const found = afterSet.find(
+          (r) => r.type === recordType && r.name === recordName && r.value === uniqueValue,
+        );
+        if (found === undefined) {
+          throw new Error(
+            `setRecord succeeded but listRecords did not return the record (type=${recordType}, name=${recordName}, value=${uniqueValue}).`,
+          );
+        }
+
+        // (c) Delete the record.
+        await adapter.deleteRecord(testDomain, {
+          type: recordType,
+          name: recordName,
+          value: uniqueValue,
+        });
+
+        // (d) List records again and assert the record is gone.
+        const afterDelete = await adapter.listRecords(testDomain);
+        const stillPresent = afterDelete.find(
+          (r) => r.type === recordType && r.name === recordName && r.value === uniqueValue,
+        );
+        if (stillPresent !== undefined) {
+          throw new Error(
+            `deleteRecord succeeded but listRecords still returned the record (type=${recordType}, name=${recordName}, value=${uniqueValue}).`,
+          );
+        }
+      } finally {
+        // Cleanup: best-effort delete in case an assertion threw above.
+        // Ignore errors here — the primary assertion error is already propagating.
+        await adapter
+          .deleteRecord(testDomain, { type: recordType, name: recordName, value: uniqueValue })
+          .catch(() => undefined);
+      }
+    });
+
+    if (roundtripWrap.ok) {
+      checks.push(pass('domain/dns-roundtrip', roundtripWrap.durationMs));
+    } else {
+      checks.push(
+        fail(
+          'domain/dns-roundtrip',
+          (roundtripWrap.err as Error)?.message ?? 'unknown error during DNS roundtrip',
+          roundtripWrap.durationMs,
+        ),
+      );
+    }
   }
 
   return checks;
