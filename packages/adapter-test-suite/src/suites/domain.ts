@@ -39,7 +39,46 @@ export const domainSuite = async (
     ];
   }
 
-  // (checks added by subsequent tasks)
+  // domain/structured-errors — obviously-invalid input must throw AgentryError
+  // with an E_-prefixed code and a phase in DOMAIN_PHASES.
+  const seWrap = await timed(ctx, () =>
+    adapter.checkAvailability('not a domain at all'),
+  );
+  if (seWrap.ok) {
+    checks.push(
+      fail(
+        'domain/structured-errors',
+        'checkAvailability("not a domain at all") must throw AgentryError, but it resolved successfully.',
+        seWrap.durationMs,
+      ),
+    );
+  } else if (!isAgentryError(seWrap.err)) {
+    checks.push(
+      fail(
+        'domain/structured-errors',
+        `checkAvailability("not a domain at all") threw a non-AgentryError (${(seWrap.err as Error)?.constructor?.name ?? typeof seWrap.err}). All adapter failures must be AgentryError.`,
+        seWrap.durationMs,
+      ),
+    );
+  } else if (typeof seWrap.err.code !== 'string' || !seWrap.err.code.startsWith('E_')) {
+    checks.push(
+      fail(
+        'domain/structured-errors',
+        `checkAvailability threw AgentryError with non-conformant code "${String(seWrap.err.code)}". Codes must be non-empty strings prefixed with "E_".`,
+        seWrap.durationMs,
+      ),
+    );
+  } else if (!DOMAIN_PHASES.has(seWrap.err.phase as AgentryErrorPhase)) {
+    checks.push(
+      fail(
+        'domain/structured-errors',
+        `checkAvailability threw AgentryError with phase "${seWrap.err.phase}", not one of init/read/write/transfer. Domain adapters classify failures using these phases.`,
+        seWrap.durationMs,
+      ),
+    );
+  } else {
+    checks.push(pass('domain/structured-errors', seWrap.durationMs));
+  }
 
   return checks;
 };
