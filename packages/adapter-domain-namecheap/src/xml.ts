@@ -12,7 +12,7 @@
  */
 
 import { XMLParser } from 'fast-xml-parser';
-import { AgentryError } from '@openagentry/core';
+import { namecheapError } from './errors.js';
 
 // ---------------------------------------------------------------------------
 // Parser singleton
@@ -69,11 +69,10 @@ export function parseNamecheapXml(xml: string): ApiResponseEnvelope {
   try {
     parsed = parser.parse(xml);
   } catch (cause) {
-    throw new AgentryError({
+    throw namecheapError({
       code: 'E_NAMECHEAP_UPSTREAM',
       message: 'Namecheap returned non-XML or malformed XML response',
       phase: 'read',
-      adapter: 'domain-namecheap',
       suggestedFix:
         'The Namecheap API returned a response that could not be parsed as XML. This is unexpected — check Namecheap API status.',
       context: { parseError: cause instanceof Error ? cause.message : String(cause) },
@@ -87,11 +86,10 @@ export function parseNamecheapXml(xml: string): ApiResponseEnvelope {
     typeof parsed !== 'object' ||
     !('ApiResponse' in (parsed as object))
   ) {
-    throw new AgentryError({
+    throw namecheapError({
       code: 'E_NAMECHEAP_UPSTREAM',
       message: 'Namecheap XML response missing expected ApiResponse root element',
       phase: 'read',
-      adapter: 'domain-namecheap',
       suggestedFix:
         'The Namecheap API returned an unexpected response shape. Check Namecheap API status.',
       context: { rawXml: xml.slice(0, 500) },

@@ -4,8 +4,8 @@
  * @module
  */
 
-import { AgentryError } from '@openagentry/core';
 import { z } from 'zod';
+import { namecheapError } from './errors.js';
 
 export const namecheapContactSchema = z
   .object({
@@ -61,11 +61,10 @@ export function parseNamecheapDomainConfig(input: unknown): NamecheapDomainConfi
     parsed = namecheapDomainConfigSchema.parse(input);
   } catch (err) {
     const zodIssues = (err as { issues?: unknown[] }).issues ?? [];
-    throw new AgentryError({
+    throw namecheapError({
       code: 'E_NAMECHEAP_SCHEMA',
       message: 'Invalid Namecheap domain adapter configuration',
       phase: 'init',
-      adapter: 'domain-namecheap',
       suggestedFix:
         'Check all required config fields: apiUser, apiKey, clientIp. See context.zodIssues for details.',
       context: { zodIssues },
