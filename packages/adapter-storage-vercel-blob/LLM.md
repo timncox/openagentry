@@ -23,5 +23,5 @@ for await (const item of adapter.list('my/')) { console.log(item.key); }
 |---|---|---|---|
 | `OA_VERCEL_BLOB_TOKEN` | yes | — | Read-write token from Vercel dashboard |
 | `OA_VERCEL_BLOB_DEFAULT_ACCESS` | no | `private` | `public` or `private` when `opts.public` is omitted |
-| `OA_VERCEL_BLOB_CACHE_MAX_AGE_PUBLIC` | no | `2592000` | Cache-Control max-age (seconds) for public blobs |
-| `OA_VERCEL_BLOB_CACHE_MAX_AGE_PRIVATE` | no | `0` | Cache-Control max-age (seconds) for private blobs |
+| `OA_VERCEL_BLOB_CACHE_MAX_AGE_PUBLIC` | no | `31536000` | Cache-Control max-age (seconds) for public blobs (1 year) |
+| `OA_VERCEL_BLOB_CACHE_MAX_AGE_PRIVATE` | no | `3600` | Cache-Control max-age (seconds) for private blobs (1 hour) |
