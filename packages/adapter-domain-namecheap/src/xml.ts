@@ -29,6 +29,7 @@ const parser = new XMLParser({
     // a plain object.
     return (
       jpath === 'ApiResponse.CommandResponse.DomainGetHostsResult.host' ||
+      jpath === 'ApiResponse.CommandResponse.DomainDNSGetHostsResult.host' ||
       jpath === 'ApiResponse.CommandResponse.DomainCheckResult' ||
       jpath === 'ApiResponse.Errors.Error'
     );
