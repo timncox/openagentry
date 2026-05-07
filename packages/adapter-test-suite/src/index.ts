@@ -5,11 +5,12 @@
  */
 
 // Side-effect imports register the built-in functional suites with the runner.
-import './suites/host.js';
-import './suites/storage.js';
-import './suites/db.js';
 import './suites/auth.js';
+import './suites/db.js';
+import './suites/email.js';
+import './suites/host.js';
 import './suites/llm.js';
+import './suites/storage.js';
 import './suites/wiki.js';
 
 export { runSuite, registerFunctionalSuite } from './runner.js';
