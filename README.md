@@ -10,7 +10,7 @@ Alpha. Shipped:
 - `@openagentry/core@0.1.0-alpha.2` — public SDK (adapter interfaces, plugin protocol, runtime helpers)
 - `@openagentry/cli@0.1.0-alpha.1` — `agentry` binary + library export of dispatcher/registry
 - `@openagentry/mcp@0.1.0-alpha.0` — `agentry-mcp` meta-MCP server (every CLI command exposed as an MCP tool)
-- `@openagentry/adapter-test-suite@0.1.0-alpha.2` — conformance runner; universal AI-friendliness checks plus host + storage + email functional suites
+- `@openagentry/adapter-test-suite@0.1.0-alpha.3` — conformance runner; universal AI-friendliness checks plus host + storage + email + domain functional suites
 - `@openagentry/adapter-host-cloudflare@0.1.0-alpha.0` — first concrete HostAdapter (Cloudflare Pages)
 - `@openagentry/adapter-db-neon@0.1.0-alpha.0` — first concrete DatabaseAdapter (Neon Postgres)
 - `@openagentry/adapter-auth-nextauth@0.1.0-alpha.0` — first concrete AuthAdapter (next-auth v4)
@@ -18,8 +18,9 @@ Alpha. Shipped:
 - `@openagentry/adapter-wiki-fs@0.1.0-alpha.0` — first concrete `WikiAdapter` (local filesystem, markdown + YAML frontmatter; no Obsidian dep)
 - `@openagentry/adapter-storage-r2@0.1.0-alpha.0` — first concrete `StorageAdapter` (Cloudflare R2 via S3-compatible API + aws4fetch)
 - `@openagentry/adapter-email-resend@0.1.0-alpha.0` — first concrete `EmailAdapter` (Resend); 77 tests, five stable error codes
+- `@openagentry/adapter-domain-namecheap@0.1.0-alpha.0` — first concrete `DomainAdapter` (Namecheap XML API); 1,427 tests total across 12 packages; seven stable error codes
 
-11 packages, ~1,224 tests total.
+12 packages, 1,427 tests total.
 
 ## Packages
 
@@ -34,6 +35,7 @@ Alpha. Shipped:
 - [`@openagentry/adapter-wiki-fs`](./packages/adapter-wiki-fs) — local-fs WikiAdapter (markdown + YAML frontmatter)
 - [`@openagentry/adapter-storage-r2`](./packages/adapter-storage-r2) — Cloudflare R2 StorageAdapter (S3-compatible)
 - [`@openagentry/adapter-email-resend`](./packages/adapter-email-resend) — Resend EmailAdapter
+- [`@openagentry/adapter-domain-namecheap`](./packages/adapter-domain-namecheap) — Namecheap DomainAdapter (XML API)
 
 ## Development
 
