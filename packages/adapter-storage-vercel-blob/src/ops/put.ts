@@ -16,6 +16,16 @@ function bodyByteLength(body: ArrayBuffer | Uint8Array | string): number {
   return body.byteLength;
 }
 
+/**
+ * Coerce the body to a type the SDK accepts.
+ * Uint8Array is not in the SDK's PutBody union, but Buffer (a Node.js subclass
+ * of Uint8Array) is — convert it so TypeScript is satisfied.
+ */
+function coerceBody(body: ArrayBuffer | Uint8Array | string): ArrayBuffer | Buffer | string {
+  if (body instanceof Uint8Array) return Buffer.from(body);
+  return body as ArrayBuffer | string;
+}
+
 export async function putOp(
   cfg: VercelBlobStorageConfig,
   key: string,
@@ -49,7 +59,7 @@ export async function putOp(
 
   let result: PutBlobResult;
   try {
-    result = await sdkPut(key, body, sdkOpts);
+    result = await sdkPut(key, coerceBody(body), sdkOpts);
   } catch (err) {
     throw sdkErrorToBlobError(err, 'write', key);
   }
