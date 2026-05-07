@@ -81,6 +81,37 @@ export const emailSuite = async (
     checks.push(pass('email/structured-errors', seWrap.durationMs));
   }
 
+  // email/send-returns-id-shape — opt-in. Set EMAIL_CONFORMANCE_TEST_TO and
+  // EMAIL_CONFORMANCE_TEST_FROM to a deliverable address pair (e.g., Resend's
+  // delivered@resend.dev for `to`, your verified sending domain for `from`).
+  const testTo = process.env.EMAIL_CONFORMANCE_TEST_TO;
+  const testFrom = process.env.EMAIL_CONFORMANCE_TEST_FROM;
+  if (testTo !== undefined && testTo !== '' && testFrom !== undefined && testFrom !== '') {
+    const probeSubject = `oa-conformance send-returns-id-shape ${Date.now()}`;
+    const sendWrap = await timed(ctx, async () => {
+      const result = await adapter.send({
+        to: testTo,
+        from: testFrom,
+        subject: probeSubject,
+        text: 'oa-conformance',
+      });
+      if (typeof result.id !== 'string' || result.id.length === 0) {
+        throw new Error(`send() returned id "${String(result.id)}" — must be a non-empty string.`);
+      }
+      if (typeof result.status !== 'string' || result.status.length === 0) {
+        throw new Error(`send() returned status "${String(result.status)}" — must be a non-empty string.`);
+      }
+      return result;
+    });
+    if (sendWrap.ok) {
+      checks.push(pass('email/send-returns-id-shape', sendWrap.durationMs));
+    } else {
+      checks.push(
+        fail('email/send-returns-id-shape', (sendWrap.err as Error)?.message ?? 'unknown', sendWrap.durationMs),
+      );
+    }
+  }
+
   return checks;
 };
 
