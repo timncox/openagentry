@@ -41,4 +41,10 @@ describe('storage functional suite — bad-storage', () => {
     const c = r.checks.find((x) => x.id === 'ai-friendly/flags');
     expect(c?.status).toBe('fail');
   });
+
+  it('storage/public-url-roundtrip fails (bad-storage returns presigned URL when public:true)', async () => {
+    const r = await runSuite({ target: badStorage });
+    const c = r.checks.find((x) => x.id === 'storage/public-url-roundtrip');
+    expect(c?.status).toBe('fail');
+  });
 });
