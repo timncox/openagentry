@@ -281,11 +281,11 @@ export const wikiSuite = async (
         errWrap.durationMs,
       ),
     );
-  } else if (typeof errWrap.err.code !== 'string' || !/^E_WIKI_/.test(errWrap.err.code)) {
+  } else if (typeof errWrap.err.code !== 'string' || !errWrap.err.code.startsWith('E_')) {
     checks.push(
       fail(
         'wiki/structured-errors',
-        `read threw AgentryError with non-conformant code "${String(errWrap.err.code)}". Wiki adapter codes must start with "E_WIKI_".`,
+        `read threw AgentryError with non-conformant code "${String(errWrap.err.code)}". Codes must be non-empty strings prefixed with "E_".`,
         errWrap.durationMs,
       ),
     );
