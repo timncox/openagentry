@@ -1,0 +1,23 @@
+{
+  "name": "bad-repo-fixture",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "category": "repo",
+    "id": "bad-repo",
+    "protocolVersion": "1",
+    "envVars": [],
+    "fillsSlots": ["repo"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": false,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": false
+    },
+    "llmDocs": "./LLM.md"
+  }
+}
