@@ -102,4 +102,18 @@ describe('listOp', () => {
     };
     await expect(collect(listOp(client, cfg))).rejects.toMatchObject({ code: 'E_R2_UPSTREAM' });
   });
+
+  it('wraps fetch rejections as E_R2_NETWORK', async () => {
+    const client: SignedFetch = {
+      async request() {
+        throw new TypeError('fetch failed');
+      },
+      async presignGet(k) {
+        return `https://example.test/${k}`;
+      },
+      endpoint: 'https://example.test',
+      bucket: 'b',
+    };
+    await expect(collect(listOp(client, cfg))).rejects.toMatchObject({ code: 'E_R2_NETWORK' });
+  });
 });

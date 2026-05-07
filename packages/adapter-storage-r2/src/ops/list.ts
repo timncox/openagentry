@@ -48,7 +48,7 @@ export async function* listOp(
     }
 
     for (const obj of parsed.contents) {
-      const url = await presignGetUrl(client, obj.key, cfg.presignTtlSeconds ?? 3600);
+      const url = await presignGetUrl(client, obj.key, cfg.presignTtlSeconds);
       yield {
         key: obj.key,
         url,

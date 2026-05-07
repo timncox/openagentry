@@ -27,6 +27,7 @@ export {
   fsErrorToWikiError,
   wikiFsError,
   type WikiFsErrorCode,
+  type WikiFsErrorInit,
 } from './errors.js';
 export { healthcheck, init, refresh } from './lifecycle.js';
 

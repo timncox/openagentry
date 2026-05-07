@@ -20,7 +20,7 @@ export {
   parseCloudflareConfig,
   type CloudflareConfig,
 } from './config.js';
-export { CF_ERROR_CODES } from './errors.js';
+export { ADAPTER_ID, CF_ERROR_CODES } from './errors.js';
 
 import { createCloudflareHostAdapter } from './adapter.js';
 

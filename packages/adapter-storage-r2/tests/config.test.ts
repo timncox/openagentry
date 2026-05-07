@@ -69,7 +69,24 @@ describe('parseR2StorageConfig', () => {
     expect(() => parseR2StorageConfig({ ...validInput, accessKeyId: '   ' })).toThrow();
   });
 
+  it('rejects empty-string accessKeyId', () => {
+    expect(() => parseR2StorageConfig({ ...validInput, accessKeyId: '' })).toThrow();
+  });
+
   it('rejects empty secretAccessKey', () => {
     expect(() => parseR2StorageConfig({ ...validInput, secretAccessKey: '' })).toThrow();
+  });
+
+  it('rejects whitespace-only secretAccessKey', () => {
+    expect(() => parseR2StorageConfig({ ...validInput, secretAccessKey: '   ' })).toThrow();
+  });
+
+  it('rejects bucket with consecutive hyphens', () => {
+    expect(() => parseR2StorageConfig({ ...validInput, bucket: 'my--bucket' })).toThrow();
+  });
+
+  it('accepts bucket with single internal hyphen', () => {
+    const cfg = parseR2StorageConfig({ ...validInput, bucket: 'my-bucket' });
+    expect(cfg.bucket).toBe('my-bucket');
   });
 });

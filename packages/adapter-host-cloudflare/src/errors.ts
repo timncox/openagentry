@@ -18,7 +18,7 @@ export const CF_ERROR_CODES = {
   PAGES_API: 'E_CF_PAGES_API',
 } as const;
 
-const ADAPTER_ID = 'host-cloudflare';
+export const ADAPTER_ID = 'host-cloudflare' as const;
 
 const AUTH_DOC = 'https://developers.cloudflare.com/fundamentals/api/get-started/create-token/';
 

@@ -7,7 +7,7 @@ describe('errors module', () => {
     expect(ADAPTER_ID).toBe('storage-r2');
   });
 
-  it('exports the 6 stable error codes', () => {
+  it('exports the 7 stable error codes', () => {
     expect(R2_ERROR_CODES).toEqual({
       NOT_FOUND: 'E_R2_NOT_FOUND',
       PERMISSION: 'E_R2_PERMISSION',
@@ -15,6 +15,7 @@ describe('errors module', () => {
       NETWORK: 'E_R2_NETWORK',
       PUBLIC_NOT_CONFIGURED: 'E_R2_PUBLIC_NOT_CONFIGURED',
       UPSTREAM: 'E_R2_UPSTREAM',
+      CONFIG_INVALID: 'E_R2_CONFIG_INVALID',
     });
   });
 

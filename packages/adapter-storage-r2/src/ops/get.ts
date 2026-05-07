@@ -41,7 +41,7 @@ export async function getOp(
 
   const url = isPublic && cfg.publicBaseUrl !== undefined
     ? publicUrl(cfg.publicBaseUrl, key)
-    : await presignGetUrl(client, key, cfg.presignTtlSeconds ?? 3600);
+    : await presignGetUrl(client, key, cfg.presignTtlSeconds);
 
   return {
     key,

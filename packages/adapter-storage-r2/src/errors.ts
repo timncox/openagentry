@@ -15,6 +15,8 @@ export const R2_ERROR_CODES = {
   NETWORK: 'E_R2_NETWORK',
   PUBLIC_NOT_CONFIGURED: 'E_R2_PUBLIC_NOT_CONFIGURED',
   UPSTREAM: 'E_R2_UPSTREAM',
+  /** Thrown at init time when env vars are missing or fail schema validation. */
+  CONFIG_INVALID: 'E_R2_CONFIG_INVALID',
 } as const;
 
 export type R2ErrorCode = (typeof R2_ERROR_CODES)[keyof typeof R2_ERROR_CODES];

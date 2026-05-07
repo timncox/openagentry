@@ -8,7 +8,6 @@
  */
 
 import type { DomainAdapter } from '@openagentry/core';
-import type { AgentryErrorPhase } from '@openagentry/core';
 import type { CheckResult, LoadedTarget, SuiteCtx } from '../types.js';
 import { registerFunctionalSuite } from '../runner.js';
 import { isAgentryError } from '../internal/is-agentry-error.js';
@@ -22,7 +21,7 @@ import { randomUUID } from 'node:crypto';
  * `'write'`    — purchase, setRecord, deleteRecord.
  * `'transfer'` — initiateTransfer.
  */
-export const DOMAIN_PHASES = new Set<AgentryErrorPhase>(['init', 'read', 'write', 'transfer']);
+export const DOMAIN_PHASES = new Set(['init', 'read', 'write', 'transfer']);
 
 export const domainSuite = async (
   target: LoadedTarget,
@@ -69,7 +68,7 @@ export const domainSuite = async (
         seWrap.durationMs,
       ),
     );
-  } else if (!DOMAIN_PHASES.has(seWrap.err.phase as AgentryErrorPhase)) {
+  } else if (!DOMAIN_PHASES.has(seWrap.err.phase)) {
     checks.push(
       fail(
         'domain/structured-errors',

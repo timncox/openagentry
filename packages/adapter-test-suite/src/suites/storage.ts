@@ -13,6 +13,15 @@ import { registerFunctionalSuite } from '../runner.js';
 import { isAgentryError } from '../internal/is-agentry-error.js';
 import { timed, fail, pass, getAdapterDefault } from '../internal/suite-helpers.js';
 
+/**
+ * Phases a storage adapter is allowed to use.
+ * `'write'`  — put operations.
+ * `'read'`   — get operations.
+ * `'delete'` — delete operations.
+ * `'list'`   — list operations.
+ */
+export const STORAGE_PHASES = new Set(['write', 'read', 'delete', 'list']);
+
 export const storageSuite = async (
   target: LoadedTarget,
   ctx: SuiteCtx,
@@ -77,7 +86,6 @@ export const storageSuite = async (
 
   // storage/structured-errors — empty key must throw AgentryError with E_-prefixed code and a storage-relevant phase.
   const seWrap = await timed(ctx, () => adapter.put('', 'body'));
-  const STORAGE_PHASES = new Set(['write', 'read', 'delete', 'list']);
   if (seWrap.ok) {
     checks.push(
       fail(
