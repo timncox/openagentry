@@ -15,6 +15,17 @@ import { registerFunctionalSuite } from '../runner.js';
 import { isAgentryError } from '../internal/is-agentry-error.js';
 import { fail, getAdapterDefault, pass, timed } from '../internal/suite-helpers.js';
 
+/**
+ * Phases a wiki adapter is allowed to use.
+ * `'init'`   — adapter-construction failures (missing env vars).
+ * `'list'`   — list pages.
+ * `'read'`   — read a page.
+ * `'write'`  — write a page.
+ * `'append'` — append to a page.
+ * `'search'` — search pages.
+ */
+export const WIKI_PHASES = new Set(['init', 'list', 'read', 'write', 'append', 'search']);
+
 export const CONFORMANCE_TOKEN = 'agentryconformancetoken';
 export const ROUNDTRIP_PATH = 'workspace/conformance-roundtrip.md';
 export const APPEND_PATH = 'workspace/conformance-append.md';
@@ -251,7 +262,8 @@ export const wikiSuite = async (
     }
   }
 
-  // wiki/structured-errors — read of nonexistent path must throw AgentryError.
+  // wiki/structured-errors — read of nonexistent path must throw AgentryError
+  // with an E_WIKI_-prefixed code and a phase in WIKI_PHASES.
   const errWrap = await timed(ctx, () => adapter.read(MISSING_PATH));
   if (errWrap.ok) {
     checks.push(
@@ -266,6 +278,22 @@ export const wikiSuite = async (
       fail(
         'wiki/structured-errors',
         `read threw non-AgentryError (${(errWrap.err as Error)?.constructor?.name ?? typeof errWrap.err}). All adapter-side failures must be AgentryError.`,
+        errWrap.durationMs,
+      ),
+    );
+  } else if (typeof errWrap.err.code !== 'string' || !/^E_WIKI_/.test(errWrap.err.code)) {
+    checks.push(
+      fail(
+        'wiki/structured-errors',
+        `read threw AgentryError with non-conformant code "${String(errWrap.err.code)}". Wiki adapter codes must start with "E_WIKI_".`,
+        errWrap.durationMs,
+      ),
+    );
+  } else if (!WIKI_PHASES.has(errWrap.err.phase)) {
+    checks.push(
+      fail(
+        'wiki/structured-errors',
+        `read threw AgentryError with phase "${errWrap.err.phase}", not one of ${[...WIKI_PHASES].join('/')}. Wiki adapters classify failures using these phases.`,
         errWrap.durationMs,
       ),
     );

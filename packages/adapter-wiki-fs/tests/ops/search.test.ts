@@ -78,4 +78,16 @@ describe('searchOp', () => {
     const hits = await searchOp(ctxLimited, 'needle');
     expect(hits).toHaveLength(2);
   });
+
+  it('returns [] for scope:project when no project vault is configured', async () => {
+    // Workspace has a matching file; project vault is not configured.
+    await writeFile(join(wsRoot, 'a.md'), 'needle');
+    const ctxNoProject: WikiFsContext = {
+      config: { workspaceVaultPath: wsRoot },
+      workspaceRoot: wsRoot,
+      // projectRoot intentionally omitted
+    };
+    const hits = await searchOp(ctxNoProject, 'needle', 'project');
+    expect(hits).toEqual([]);
+  });
 });

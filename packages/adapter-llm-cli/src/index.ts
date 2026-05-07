@@ -26,6 +26,7 @@ export {
   llmCliError,
   llmCliErrorFromCause,
   type LlmCliErrorCode,
+  type LlmCliErrorInit,
 } from './errors.js';
 export { defaultSpawn, resolveBinary, type SpawnFn } from './exec.js';
 export { init, refresh, healthcheck } from './lifecycle.js';
