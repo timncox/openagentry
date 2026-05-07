@@ -58,22 +58,22 @@ function buildFromEnv(): VercelBlobStorageAdapter {
   return cached;
 }
 
-function getAdapter(): VercelBlobStorageAdapter {
-  return buildFromEnv();
-}
-
+// Lazy adapter: synchronous buildFromEnv() throws are wrapped as rejected
+// promises by `async` on put/get/delete (call sites always `await`).
+// `list` returns AsyncIterable, not a Promise, so it stays a bare arrow
+// — sync throws there are caught by callers' for-await loops.
 const lazyAdapter: VercelBlobStorageAdapter = Object.freeze({
   category: 'storage',
   id: 'storage-vercel-blob',
   put: async (key: string, body: ArrayBuffer | Uint8Array | string, opts?: PutOpts): Promise<StorageObject> =>
-    getAdapter().put(key, body, opts),
-  get: async (key: string): Promise<StorageObject | null> => getAdapter().get(key),
-  delete: async (key: string): Promise<void> => getAdapter().delete(key),
-  list: (prefix?: string): AsyncIterable<StorageObject> => getAdapter().list(prefix),
+    buildFromEnv().put(key, body, opts),
+  get: async (key: string): Promise<StorageObject | null> => buildFromEnv().get(key),
+  delete: async (key: string): Promise<void> => buildFromEnv().delete(key),
+  list: (prefix?: string): AsyncIterable<StorageObject> => buildFromEnv().list(prefix),
   getCapabilities: (): VercelBlobStorageCapabilities => {
     // Capability inquiry should not throw on missing env — return a permissive default.
     try {
-      return getAdapter().getCapabilities();
+      return buildFromEnv().getCapabilities();
     } catch {
       return { supportsPublic: true, defaultAccess: 'private' };
     }
