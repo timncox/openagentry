@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2026-05-06)
+
+- Add `email` functional suite with two checks:
+  - `email/structured-errors` — malformed `from` must throw AgentryError with E_-prefixed code and phase ∈ {send, init}.
+  - `email/send-returns-id-shape` — opt-in via `EMAIL_CONFORMANCE_TEST_TO` + `EMAIL_CONFORMANCE_TEST_FROM`. Verifies result.id and result.status are non-empty strings.
+- Add `EMAIL_PHASES` constant (`Set<['send', 'init']>`) exported from `suites/email.ts`.
+- Add `bad-email` fixture for failure-case coverage.
+
 ## 0.1.0-alpha.1 (2026-05-06)
 
 - Tighten `storage/structured-errors` check: assert `err.code` starts with `E_` and `err.phase ∈ {write, read, delete, list}`.
