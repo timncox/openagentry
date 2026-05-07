@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2026-05-07)
+
+- Add `repo` functional suite with two checks:
+  - `repo/structured-errors` — `get("not-a-real-owner-99", "not-a-real-repo-99")` must return `null` OR throw `AgentryError` with an `E_`-prefixed code and `phase ∈ {init, read, createProject, delete}`. Returning a non-null value, or throwing a non-`AgentryError`, or throwing an `AgentryError` with a wrong code/phase all FAIL.
+  - `repo/create-delete-roundtrip` — opt-in via `OA_REPO_CONFORMANCE_TEST_OWNER`. Creates `oa-conformance-<uuid>` (private), asserts `get()` returns the repo with matching owner/name/visibility, deletes it, asserts `get()` returns `null`. Cleans up via `try/finally`.
+- Export `REPO_PHASES` (`Set` containing `'init'`, `'read'`, `'createProject'`, `'delete'`) from `suites/repo.ts`.
+- Add `bad-repo` fixture: plain-`Error`-throwing adapter (all 4 methods) with a valid `LLM.md`, isolating `repo/structured-errors` failure from universal-check failures.
+
 ## 0.1.0-alpha.3 (2026-05-07)
 
 - Add `domain` functional suite with two checks:
