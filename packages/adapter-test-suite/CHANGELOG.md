@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-alpha.1 (2026-05-06)
+
+- Tighten `storage/structured-errors` check: assert `err.code` starts with `E_` and `err.phase ∈ {write, read, delete, list}`.
+- Add `storage/public-url-roundtrip` opt-in check (runs when adapter exposes `getCapabilities().supportsPublic === true`).
+- `good-storage` fixture phase corrected (`init` → `write`).
+- `bad-storage` fixture extended to opt into `supportsPublic` and fail the new check.
+
 ## 0.1.0-alpha.0 — 2026-05-04
 
 Initial conformance runner:
