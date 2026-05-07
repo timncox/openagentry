@@ -22,8 +22,9 @@ Alpha. Shipped:
 - `@openagentry/adapter-domain-namecheap@0.1.0-alpha.0` — first concrete `DomainAdapter` (Namecheap XML API); 1,427 tests total across 12 packages; seven stable error codes
 - `@openagentry/adapter-repo-github@0.1.0-alpha.0` — first concrete `RepoAdapter` (GitHub REST API); 1,628 tests total across 13 packages; seven stable error codes
 - `@openagentry/adapter-host-vercel@0.1.0-alpha.0` — second concrete `HostAdapter` (Vercel REST API); proves swappability of the host abstraction; 1,860 tests total across 14 packages
+- `@openagentry/adapter-llm-aigateway@0.1.0-alpha.0` — second concrete `LlmAdapter` (Vercel AI Gateway via `ai` SDK); runtime/programmatic flavor; proves swappability of the LLM abstraction; 2,044 tests total across 16 packages
 
-15 packages, 1,960 tests total.
+16 packages, 2,044 tests total.
 
 ## Packages
 
@@ -35,6 +36,7 @@ Alpha. Shipped:
 - [`@openagentry/adapter-db-neon`](./packages/adapter-db-neon) — Neon Postgres DatabaseAdapter
 - [`@openagentry/adapter-auth-nextauth`](./packages/adapter-auth-nextauth) — next-auth v4 AuthAdapter
 - [`@openagentry/adapter-llm-cli`](./packages/adapter-llm-cli) — operator/CLI LlmAdapter (`claude` / `codex` / `gemini`)
+- [`@openagentry/adapter-llm-aigateway`](./packages/adapter-llm-aigateway) — runtime LlmAdapter (Vercel AI Gateway via `ai` SDK)
 - [`@openagentry/adapter-wiki-fs`](./packages/adapter-wiki-fs) — local-fs WikiAdapter (markdown + YAML frontmatter)
 - [`@openagentry/adapter-storage-r2`](./packages/adapter-storage-r2) — Cloudflare R2 StorageAdapter (S3-compatible)
 - [`@openagentry/adapter-storage-vercel-blob`](./packages/adapter-storage-vercel-blob) — Vercel Blob StorageAdapter
