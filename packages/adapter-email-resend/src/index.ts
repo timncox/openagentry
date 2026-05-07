@@ -54,7 +54,15 @@ function buildFromEnv(): EmailAdapter {
 const lazyAdapter: EmailAdapter = Object.freeze({
   category: 'email' as const,
   id: 'email-resend',
-  send: (message: EmailMessage): Promise<EmailSendResult> => buildFromEnv().send(message),
+  send: (message: EmailMessage): Promise<EmailSendResult> => {
+    let adapter: EmailAdapter;
+    try {
+      adapter = buildFromEnv();
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    return adapter.send(message);
+  },
 });
 
 export default lazyAdapter;
