@@ -133,3 +133,21 @@ export function xmlInt(value: string | undefined): number | undefined {
   const n = parseInt(value, 10);
   return Number.isNaN(n) ? undefined : n;
 }
+
+/**
+ * Return a string value unchanged, or `undefined` when absent.
+ * Convenience wrapper to make intent explicit when reading string attributes.
+ */
+export function xmlString(value: string | undefined): string | undefined {
+  return value;
+}
+
+/**
+ * Coerce a Namecheap attribute string to a float.
+ * Returns `undefined` when the string is absent or not a valid number.
+ */
+export function xmlFloat(value: string | undefined): number | undefined {
+  if (value === undefined) return undefined;
+  const n = parseFloat(value);
+  return Number.isNaN(n) ? undefined : n;
+}
