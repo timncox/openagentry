@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2026-05-07)
+
+- Add `domain` functional suite with two checks:
+  - `domain/structured-errors` — `checkAvailability("not a domain at all")` must throw `AgentryError` with an `E_`-prefixed code and `phase ∈ {init, read, write, transfer}`.
+  - `domain/dns-roundtrip` — opt-in via `OA_DOMAIN_CONFORMANCE_TEST_DOMAIN`. Adds a unique TXT record, asserts presence via `listRecords`, deletes it, asserts absence. Cleans up via `try/finally`.
+- Export `DOMAIN_PHASES` (`Set<AgentryErrorPhase>` containing `'init'`, `'read'`, `'write'`, `'transfer'`) from `suites/domain.ts`.
+- Add `bad-domain` fixture: plain-`Error`-throwing adapter with a valid `LLM.md`, isolating `domain/structured-errors` failure from universal-check failures.
+
 ## 0.1.0-alpha.2 (2026-05-06)
 
 - Add `email` functional suite with two checks:
