@@ -1,0 +1,23 @@
+{
+  "name": "bad-domain-fixture",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "category": "domain",
+    "id": "bad-domain",
+    "protocolVersion": "1",
+    "envVars": [],
+    "fillsSlots": ["domain"],
+    "requiresSlots": [],
+    "capabilities": {},
+    "aiFriendly": {
+      "structuredErrors": false,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": false
+    },
+    "llmDocs": "./LLM.md"
+  }
+}

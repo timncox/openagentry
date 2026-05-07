@@ -7,6 +7,7 @@
 // Side-effect imports register the built-in functional suites with the runner.
 import './suites/auth.js';
 import './suites/db.js';
+import './suites/domain.js';
 import './suites/email.js';
 import './suites/host.js';
 import './suites/llm.js';

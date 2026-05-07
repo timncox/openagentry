@@ -1,0 +1,84 @@
+{
+  "name": "@openagentry/adapter-domain-namecheap",
+  "version": "0.1.0-alpha.0",
+  "description": "OpenAgentry DomainAdapter implementation for Namecheap",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "LLM.md", "LICENSE", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "openagentry": {
+    "type": "adapter",
+    "category": "domain",
+    "id": "domain-namecheap",
+    "protocolVersion": "1",
+    "envVars": [
+      { "name": "OA_NAMECHEAP_API_USER", "secret": false, "required": true },
+      { "name": "OA_NAMECHEAP_API_KEY", "secret": true, "required": true },
+      { "name": "OA_NAMECHEAP_CLIENT_IP", "secret": false, "required": true },
+      { "name": "OA_NAMECHEAP_USERNAME", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_USE_SANDBOX", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_ENDPOINT", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_FIRST_NAME", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_LAST_NAME", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_ADDRESS1", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_CITY", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_STATE_PROVINCE", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_POSTAL_CODE", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_COUNTRY", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_PHONE", "secret": false, "required": false },
+      { "name": "OA_NAMECHEAP_CONTACT_EMAIL", "secret": false, "required": false }
+    ],
+    "fillsSlots": ["domain"],
+    "requiresSlots": [],
+    "capabilities": {
+      "transport": "https",
+      "wireFormat": "xml",
+      "dnsRecordTypes": "A,AAAA,CNAME,TXT,MX,NS,SRV",
+      "dnsWriteSemantics": "replace-all",
+      "purchase": true,
+      "transfer": true,
+      "premiumDomains": "read-only",
+      "ipWhitelistRequired": true,
+      "sandbox": true
+    },
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": ["deleteRecord"],
+      "queryableState": true
+    },
+    "llmDocs": "./LLM.md"
+  },
+  "dependencies": {
+    "@openagentry/core": "workspace:*",
+    "fast-xml-parser": "^4.5.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@openagentry/adapter-test-suite": "workspace:*",
+    "@types/node": "^20.0.0",
+    "msw": "^2.4.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

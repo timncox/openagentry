@@ -1,6 +1,6 @@
 {
   "name": "@openagentry/adapter-test-suite",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "OpenAgentry adapter conformance suite — functional + AI-friendliness checks every adapter must pass",
   "license": "Apache-2.0",
   "type": "module",
