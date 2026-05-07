@@ -23,11 +23,6 @@ export type GithubRepoConfigParsed = z.output<typeof githubRepoConfigSchema>;
  */
 export interface GithubRepoConfig extends GithubRepoConfigParsed {
   endpoint: string;
-  /**
-   * Cached authenticated user login — populated lazily on the first `create`
-   * call. Not part of the config schema; mutated by the adapter closure.
-   */
-  _cachedLogin?: string;
 }
 
 const DEFAULT_ENDPOINT = 'https://api.github.com';
