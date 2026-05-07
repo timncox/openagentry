@@ -1,0 +1,71 @@
+{
+  "name": "@openagentry/adapter-repo-github",
+  "version": "0.1.0-alpha.0",
+  "description": "OpenAgentry RepoAdapter implementation for GitHub REST API",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "LLM.md", "LICENSE", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "openagentry": {
+    "type": "adapter",
+    "category": "repo",
+    "id": "repo-github",
+    "protocolVersion": "1",
+    "envVars": [
+      { "name": "OA_GITHUB_TOKEN", "secret": true, "required": true },
+      { "name": "OA_GITHUB_ENDPOINT", "secret": false, "required": false }
+    ],
+    "fillsSlots": ["repo"],
+    "requiresSlots": [],
+    "capabilities": {
+      "transport": "https",
+      "wireFormat": "json",
+      "createsRepos": true,
+      "deletesRepos": true,
+      "ghes": true,
+      "remoteUrlModes": "https,ssh",
+      "branchOps": false,
+      "prOps": false,
+      "issueOps": false,
+      "webhookOps": false
+    },
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": [],
+      "queryableState": true
+    },
+    "llmDocs": "./LLM.md"
+  },
+  "dependencies": {
+    "@openagentry/core": "workspace:*",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@openagentry/adapter-test-suite": "workspace:*",
+    "@types/node": "^20.0.0",
+    "msw": "^2.4.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -10,7 +10,7 @@ Alpha. Shipped:
 - `@openagentry/core@0.1.0-alpha.2` — public SDK (adapter interfaces, plugin protocol, runtime helpers)
 - `@openagentry/cli@0.1.0-alpha.1` — `agentry` binary + library export of dispatcher/registry
 - `@openagentry/mcp@0.1.0-alpha.0` — `agentry-mcp` meta-MCP server (every CLI command exposed as an MCP tool)
-- `@openagentry/adapter-test-suite@0.1.0-alpha.3` — conformance runner; universal AI-friendliness checks plus host + storage + email + domain functional suites
+- `@openagentry/adapter-test-suite@0.1.0-alpha.4` — conformance runner; universal AI-friendliness checks plus host + storage + email + domain + repo functional suites
 - `@openagentry/adapter-host-cloudflare@0.1.0-alpha.0` — first concrete HostAdapter (Cloudflare Pages)
 - `@openagentry/adapter-db-neon@0.1.0-alpha.0` — first concrete DatabaseAdapter (Neon Postgres)
 - `@openagentry/adapter-auth-nextauth@0.1.0-alpha.0` — first concrete AuthAdapter (next-auth v4)
@@ -19,8 +19,9 @@ Alpha. Shipped:
 - `@openagentry/adapter-storage-r2@0.1.0-alpha.0` — first concrete `StorageAdapter` (Cloudflare R2 via S3-compatible API + aws4fetch)
 - `@openagentry/adapter-email-resend@0.1.0-alpha.0` — first concrete `EmailAdapter` (Resend); 77 tests, five stable error codes
 - `@openagentry/adapter-domain-namecheap@0.1.0-alpha.0` — first concrete `DomainAdapter` (Namecheap XML API); 1,427 tests total across 12 packages; seven stable error codes
+- `@openagentry/adapter-repo-github@0.1.0-alpha.0` — first concrete `RepoAdapter` (GitHub REST API); 1,628 tests total across 13 packages; seven stable error codes
 
-12 packages, 1,427 tests total.
+13 packages, 1,628 tests total.
 
 ## Packages
 
@@ -36,6 +37,7 @@ Alpha. Shipped:
 - [`@openagentry/adapter-storage-r2`](./packages/adapter-storage-r2) — Cloudflare R2 StorageAdapter (S3-compatible)
 - [`@openagentry/adapter-email-resend`](./packages/adapter-email-resend) — Resend EmailAdapter
 - [`@openagentry/adapter-domain-namecheap`](./packages/adapter-domain-namecheap) — Namecheap DomainAdapter (XML API)
+- [`@openagentry/adapter-repo-github`](./packages/adapter-repo-github) — GitHub RepoAdapter (REST API)
 
 ## Development
 
