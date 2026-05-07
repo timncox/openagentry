@@ -10,7 +10,7 @@
  * @module
  */
 
-import type { Domain } from '@openagentry/core';
+import type { Domain, IsoTimestamp } from '@openagentry/core';
 import type { NamecheapDomainConfig } from './config.js';
 import { namecheapFetch } from './http.js';
 import { namecheapError, NAMECHEAP_ERROR_CODES } from './errors.js';
@@ -176,8 +176,8 @@ export async function purchase(
   return {
     domain,
     registrar: 'namecheap',
-    registeredAt: parseNamecheapDate(createdDateRaw),
-    expiresAt: parseNamecheapDate(expiredDateRaw),
+    registeredAt: parseNamecheapDate(createdDateRaw) as IsoTimestamp,
+    expiresAt: parseNamecheapDate(expiredDateRaw) as IsoTimestamp,
     autoRenew,
   };
 }
