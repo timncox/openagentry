@@ -20,8 +20,9 @@ Alpha. Shipped:
 - `@openagentry/adapter-email-resend@0.1.0-alpha.0` — first concrete `EmailAdapter` (Resend); 77 tests, five stable error codes
 - `@openagentry/adapter-domain-namecheap@0.1.0-alpha.0` — first concrete `DomainAdapter` (Namecheap XML API); 1,427 tests total across 12 packages; seven stable error codes
 - `@openagentry/adapter-repo-github@0.1.0-alpha.0` — first concrete `RepoAdapter` (GitHub REST API); 1,628 tests total across 13 packages; seven stable error codes
+- `@openagentry/adapter-host-vercel@0.1.0-alpha.0` — second concrete `HostAdapter` (Vercel REST API); proves swappability of the host abstraction; 1,860 tests total across 14 packages
 
-13 packages, 1,628 tests total.
+14 packages, 1,860 tests total.
 
 ## Packages
 
@@ -38,6 +39,7 @@ Alpha. Shipped:
 - [`@openagentry/adapter-email-resend`](./packages/adapter-email-resend) — Resend EmailAdapter
 - [`@openagentry/adapter-domain-namecheap`](./packages/adapter-domain-namecheap) — Namecheap DomainAdapter (XML API)
 - [`@openagentry/adapter-repo-github`](./packages/adapter-repo-github) — GitHub RepoAdapter (REST API)
+- [`@openagentry/adapter-host-vercel`](./packages/adapter-host-vercel) — Vercel HostAdapter (REST API)
 
 ## Development
 
