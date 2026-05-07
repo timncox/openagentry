@@ -66,3 +66,14 @@ describe('AgentryErrorPhase — wiki phases', () => {
     new AgentryError({ code: 'X', message: 'm', phase: 'append' });
   });
 });
+
+describe('AgentryErrorPhase storage extensions', () => {
+  it('accepts "delete" as a valid phase', () => {
+    const err = new AgentryError({
+      code: 'E_TEST',
+      message: 'test',
+      phase: 'delete',
+    });
+    expect(err.phase).toBe('delete');
+  });
+});

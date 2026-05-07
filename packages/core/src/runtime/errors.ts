@@ -13,6 +13,7 @@ export type AgentryErrorPhase =
   | 'append'
   | 'auth'
   | 'createProject'
+  | 'delete'
   | 'destroyProject'
   | 'createInstance'
   | 'destroyInstance'
