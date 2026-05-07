@@ -1,0 +1,77 @@
+{
+  "name": "@openagentry/adapter-storage-r2",
+  "version": "0.1.0-alpha.0",
+  "description": "OpenAgentry StorageAdapter implementation for Cloudflare R2 (S3-compatible API)",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "LLM.md", "LICENSE", "CHANGELOG.md"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "openagentry": {
+    "type": "adapter",
+    "category": "storage",
+    "id": "storage-r2",
+    "protocolVersion": "1",
+    "envVars": [
+      { "name": "OA_R2_ACCOUNT_ID", "secret": false, "required": true },
+      { "name": "OA_R2_ACCESS_KEY_ID", "secret": true, "required": true },
+      { "name": "OA_R2_SECRET_ACCESS_KEY", "secret": true, "required": true },
+      { "name": "OA_R2_BUCKET", "secret": false, "required": true },
+      { "name": "OA_R2_PUBLIC_BASE_URL", "secret": false, "required": false },
+      { "name": "OA_R2_PRESIGN_TTL", "secret": false, "required": false },
+      { "name": "OA_R2_ENDPOINT", "secret": false, "required": false }
+    ],
+    "fillsSlots": ["storage"],
+    "requiresSlots": [],
+    "capabilities": {
+      "signing": "sigv4",
+      "presignedUrls": true,
+      "publicUrls": true,
+      "multipart": false,
+      "streamingUploads": false,
+      "rangeReads": false,
+      "maxObjectSize": "5GB"
+    },
+    "aiFriendly": {
+      "structuredErrors": true,
+      "dryRun": false,
+      "idempotent": ["delete"],
+      "queryableState": true
+    },
+    "llmDocs": "./LLM.md"
+  },
+  "dependencies": {
+    "@openagentry/core": "workspace:*",
+    "aws4fetch": "^1.0.20",
+    "fast-xml-parser": "^4.5.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@openagentry/adapter-test-suite": "workspace:*",
+    "@testcontainers/minio": "^10.13.0",
+    "@types/node": "^20.0.0",
+    "testcontainers": "^10.13.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
