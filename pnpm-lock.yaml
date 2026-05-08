@@ -233,6 +233,34 @@ importers:
         specifier: ^2.0.0
         version: 2.1.9(@types/node@20.19.39)(msw@2.14.3(@types/node@20.19.39)(typescript@5.9.3))
 
+  packages/adapter-llm-openrouter:
+    dependencies:
+      '@openagentry/core':
+        specifier: workspace:*
+        version: link:../core
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
+    devDependencies:
+      '@openagentry/adapter-test-suite':
+        specifier: workspace:*
+        version: link:../adapter-test-suite
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.39
+      msw:
+        specifier: ^2.0.0
+        version: 2.14.3(@types/node@20.19.39)(typescript@5.9.3)
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(postcss@8.5.14)(typescript@5.9.3)(yaml@2.8.4)
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.0.0
+        version: 2.1.9(@types/node@20.19.39)(msw@2.14.3(@types/node@20.19.39)(typescript@5.9.3))
+
   packages/adapter-repo-github:
     dependencies:
       '@openagentry/core':
