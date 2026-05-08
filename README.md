@@ -23,8 +23,9 @@ Alpha. Shipped:
 - `@openagentry/adapter-repo-github@0.1.0-alpha.0` — first concrete `RepoAdapter` (GitHub REST API); 1,628 tests total across 13 packages; seven stable error codes
 - `@openagentry/adapter-host-vercel@0.1.0-alpha.0` — second concrete `HostAdapter` (Vercel REST API); proves swappability of the host abstraction; 1,860 tests total across 14 packages
 - `@openagentry/adapter-llm-aigateway@0.1.0-alpha.0` — second concrete `LlmAdapter` (Vercel AI Gateway via `ai` SDK); runtime/programmatic flavor; proves swappability of the LLM abstraction; 2,044 tests total across 16 packages
+- `@openagentry/adapter-llm-openrouter@0.1.0-alpha.0` — third concrete `LlmAdapter` (OpenRouter plain `fetch`/raw HTTP); closes the LLM category in v0 (3 of 3 concrete); 12 of 12 v0 default adapters concrete; 2,148 tests total across 17 packages
 
-16 packages, 2,044 tests total.
+17 packages, 2,148 tests total.
 
 ## Packages
 
@@ -44,6 +45,7 @@ Alpha. Shipped:
 - [`@openagentry/adapter-domain-namecheap`](./packages/adapter-domain-namecheap) — Namecheap DomainAdapter (XML API)
 - [`@openagentry/adapter-repo-github`](./packages/adapter-repo-github) — GitHub RepoAdapter (REST API)
 - [`@openagentry/adapter-host-vercel`](./packages/adapter-host-vercel) — Vercel HostAdapter (REST API)
+- [`@openagentry/adapter-llm-openrouter`](./packages/adapter-llm-openrouter) — runtime LlmAdapter (OpenRouter plain fetch / raw HTTP; closes LLM category)
 
 ## Development
 
