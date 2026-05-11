@@ -96,15 +96,61 @@ export class WikiIndex {
       return false;
     });
   }
-  backlinks(_path: string): IndexedPage[] {
-    throw new Error('not implemented yet (Task 8)');
+  forwardLinks(sourcePath: string): IndexedPage[] {
+    const source = this.pages.get(sourcePath);
+    if (source === undefined) return [];
+
+    const out = new Map<string, IndexedPage>();
+
+    // 1. Resolve [[wikilinks]] by title (case-insensitive).
+    for (const link of source.wikilinks) {
+      const needle = link.toLowerCase();
+      for (const p of this.pages.values()) {
+        if (p.title.toLowerCase() === needle && p.path !== sourcePath) {
+          out.set(p.path, p);
+        }
+      }
+    }
+
+    // 2. Resolve relative ./paths against the source's directory.
+    const sourceDir = sourcePath.includes('/')
+      ? sourcePath.slice(0, sourcePath.lastIndexOf('/'))
+      : '';
+    for (const rel of source.relativePaths) {
+      const resolved = resolveRelative(sourceDir, rel);
+      const target = this.pages.get(resolved);
+      if (target !== undefined && target.path !== sourcePath) {
+        out.set(target.path, target);
+      }
+    }
+
+    return [...out.values()];
   }
-  forwardLinks(_path: string): IndexedPage[] {
-    throw new Error('not implemented yet (Task 8)');
+
+  backlinks(targetPath: string): IndexedPage[] {
+    if (!this.pages.has(targetPath)) return [];
+    return [...this.pages.values()].filter(
+      (p) => p.path !== targetPath && this.forwardLinks(p.path).some((l) => l.path === targetPath),
+    );
   }
   refresh(): Promise<void> {
     throw new Error('not implemented yet (Task 9)');
   }
+}
+
+/** POSIX-style path resolution for `dir` + `./rel/path.md` (no Node `path` dep). */
+function resolveRelative(dir: string, rel: string): string {
+  const segs = (dir === '' ? [] : dir.split('/')).concat(rel.split('/'));
+  const out: string[] = [];
+  for (const s of segs) {
+    if (s === '' || s === '.') continue;
+    if (s === '..') {
+      out.pop();
+      continue;
+    }
+    out.push(s);
+  }
+  return out.join('/');
 }
 
 /** Build a ≤160-char snippet centred on a body match (or the first 160 chars). */
