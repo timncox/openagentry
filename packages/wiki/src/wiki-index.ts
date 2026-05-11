@@ -133,8 +133,10 @@ export class WikiIndex {
       (p) => p.path !== targetPath && this.forwardLinks(p.path).some((l) => l.path === targetPath),
     );
   }
-  refresh(): Promise<void> {
-    throw new Error('not implemented yet (Task 9)');
+  async refresh(): Promise<void> {
+    // v0: full rebuild. Incremental refresh based on WikiPage.updatedAt is
+    // a future plan slot.
+    await this.build();
   }
 }
 
