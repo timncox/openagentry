@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.0-alpha.2 — 2026-05-08
+
+Demo-surfaced bug fixes (openagentry-demo, 2026-05-07):
+
+- **Add `agentry init`** — creates `.agentry/workspace.json` with optional plugin
+  positionals (`agentry init @openagentry/adapter-llm-cli ...`), refuses to
+  overwrite without `--force`. The `doctor`/`list`/`capabilities` text output
+  used to reference this command before it existed.
+- **Fix `agentry --version` / `agentry version` reporting `0.0.0`** — published
+  layout puts `package.json` one directory up from `dist/cli.cjs`, but the path
+  candidates assumed two/three. Now tries the dist layout first, validates the
+  package name, and falls back to the test/src layout.
+- **Fix `agentry capabilities` reporting phantom `loadErrors`** — Node's
+  CJS-ESM dynamic import wraps the entire CommonJS exports object as
+  `mod.default`, so tsup-bundled adapters appeared at `mod.default.default`.
+  The plugin loader now unwraps the double-default before validating shape.
+
 ## 0.1.0-alpha.1 — 2026-05-04
 
 - Add library export at the package root (`main`/`module`/`exports`):

@@ -30,6 +30,7 @@ describe('@openagentry/cli library export', () => {
       'capabilities',
       'doctor',
       'help',
+      'init',
       'list',
       'version',
     ]);

@@ -59,4 +59,18 @@ describe('registerAdaptersFromPlugin', () => {
     const a = useAdapter<{ id: string; category: 'host' }>('host');
     expect(a.id).toBe('fake-host');
   });
+
+  it('registers an adapter from a tsup-style CJS bundle (double-default interop)', async () => {
+    // tsup's __toCommonJS output puts the adapter at module.exports.default,
+    // so dynamic import gives mod.default = entire exports, mod.default.default = adapter.
+    const FIXTURE_TSUP = resolve(__dirname, '../fixtures/fake-tsup-adapter');
+    const target = join(workspaceRoot, 'node_modules', 'fake-tsup-adapter');
+    await mkdir(target, { recursive: true });
+    await cp(FIXTURE_TSUP, target, { recursive: true });
+
+    const loaded = await loadPlugin(workspaceRoot, 'fake-tsup-adapter');
+    registerAdaptersFromPlugin(loaded);
+    const a = useAdapter<{ id: string; category: 'host' }>('host');
+    expect(a.id).toBe('fake-tsup-host');
+  });
 });

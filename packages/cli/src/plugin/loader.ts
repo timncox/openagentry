@@ -127,13 +127,29 @@ function isAdapterShape(value: unknown): value is AdapterMinimalShape {
 }
 
 /**
+ * Find the adapter on a dynamic-imported module, accounting for Node's CJS-ESM
+ * interop. ESM packages give us `mod.default = adapter`. CJS packages built with
+ * tsup wrap `module.exports = { default: adapter, ...named }`, so dynamic import
+ * gives `mod.default = entire exports` and the real adapter is at
+ * `mod.default.default`.
+ */
+function findAdapterExport(mod: unknown): AdapterMinimalShape | undefined {
+  const candidate = (mod as { default?: unknown }).default;
+  if (isAdapterShape(candidate)) return candidate;
+  // CJS-ESM double-default interop.
+  const inner = (candidate as { default?: unknown } | undefined)?.default;
+  if (isAdapterShape(inner)) return inner;
+  return undefined;
+}
+
+/**
  * For adapter plugins, register the adapter exported by the module. No-op for
  * non-adapter plugin types (scaffold/mcp/command/skill).
  */
 export function registerAdaptersFromPlugin(plugin: LoadedPlugin): void {
   if (plugin.manifest.type !== 'adapter') return;
-  const exported = (plugin.module as { default?: unknown }).default;
-  if (!isAdapterShape(exported)) {
+  const exported = findAdapterExport(plugin.module);
+  if (exported === undefined) {
     throw new AgentryError({
       code: 'E_PLUGIN_BAD_EXPORT',
       message: `Adapter plugin "${plugin.name}" must default-export an object with { category, id }.`,

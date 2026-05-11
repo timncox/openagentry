@@ -14,10 +14,14 @@ pnpm add @openagentry/adapter-wiki-fs
 ```ts
 import { createWikiFsAdapter } from '@openagentry/adapter-wiki-fs';
 
+// Required: workspaceVaultPath. (Not `root` or `path` — those won't work.)
+// Optional: projectVaultPath, for `project/...` writes.
 const adapter = createWikiFsAdapter({
   workspaceVaultPath: './wiki',
 });
 
+// Paths require a `workspace/` or `project/` prefix. A bare `notes/foo.md`
+// falls back to the workspace vault, but using the prefix is recommended.
 await adapter.write('workspace/decisions/0001-cf-vs-vercel.md', '# Cloudflare\n...');
 const pages = await adapter.list();
 const hits = await adapter.search('cloudflare');

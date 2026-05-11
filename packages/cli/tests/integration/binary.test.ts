@@ -1,8 +1,9 @@
 // packages/cli/tests/integration/binary.test.ts
-import { describe, expect, it, beforeAll } from 'vitest';
+import { describe, expect, it, beforeAll, afterAll } from 'vitest';
 import { execa } from 'execa';
-import { resolve } from 'node:path';
-import { stat } from 'node:fs/promises';
+import { resolve, join } from 'node:path';
+import { cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 
@@ -10,6 +11,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const BIN = resolve(__dirname, '..', '..', 'dist', 'cli.cjs');
+const PKG = resolve(__dirname, '..', '..', 'package.json');
+const TSUP_FIXTURE = resolve(__dirname, '..', 'fixtures', 'fake-tsup-adapter');
 
 beforeAll(async () => {
   // Ensure the binary is built. If not, fail fast with a useful message.
@@ -38,6 +41,14 @@ describe('agentry binary (integration)', () => {
     expect(typeof parsed.protocolVersion).toBe('number');
   });
 
+  it('agentry version reports the version from package.json (not 0.0.0)', async () => {
+    const pkg = JSON.parse(await readFile(PKG, 'utf8')) as { version: string };
+    const { stdout } = await execa('node', [BIN, 'version', '--json']);
+    const parsed = JSON.parse(stdout) as { cliVersion: string };
+    expect(parsed.cliVersion).toBe(pkg.version);
+    expect(parsed.cliVersion).not.toBe('0.0.0');
+  });
+
   it('agentry help lists commands', async () => {
     const { stdout, exitCode } = await execa('node', [BIN, 'help']);
     expect(exitCode).toBe(0);
@@ -64,5 +75,37 @@ describe('agentry binary (integration)', () => {
     expect(exitCode).toBe(1);
     const parsed = JSON.parse(stderr);
     expect(parsed.code).toBe('E_UNKNOWN_COMMAND');
+  });
+});
+
+describe('agentry capabilities (integration, against tsup-style adapter)', () => {
+  let workspaceRoot: string;
+  beforeAll(async () => {
+    workspaceRoot = await mkdtemp(join(tmpdir(), 'agentry-int-'));
+    const target = join(workspaceRoot, 'node_modules', 'fake-tsup-adapter');
+    await mkdir(target, { recursive: true });
+    await cp(TSUP_FIXTURE, target, { recursive: true });
+    await writeFile(join(workspaceRoot, 'package.json'), JSON.stringify({ name: 'integ-ws' }));
+    await mkdir(join(workspaceRoot, '.agentry'), { recursive: true });
+    await writeFile(
+      join(workspaceRoot, '.agentry', 'workspace.json'),
+      JSON.stringify({ plugins: ['fake-tsup-adapter'], defaultEnv: 'dev' }),
+    );
+  });
+  afterAll(async () => {
+    if (workspaceRoot !== undefined) await rm(workspaceRoot, { recursive: true, force: true });
+  });
+
+  it('loads tsup-bundled CJS adapters without phantom loadErrors', async () => {
+    const { stdout, exitCode } = await execa('node', [BIN, 'capabilities', '--json'], {
+      cwd: workspaceRoot,
+    });
+    expect(exitCode).toBe(0);
+    const parsed = JSON.parse(stdout) as {
+      categories: Record<string, { adapterId: string }>;
+      loadErrors: Array<{ name: string; code: string }>;
+    };
+    expect(parsed.categories.host?.adapterId).toBe('fake-tsup-host');
+    expect(parsed.loadErrors).toEqual([]);
   });
 });

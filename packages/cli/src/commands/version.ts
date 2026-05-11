@@ -11,24 +11,26 @@ import { PROTOCOL_VERSION } from '@openagentry/core';
 import { defineCommand } from '../command.js';
 
 interface PackageJsonShape {
-  version: string;
+  name?: string;
+  version?: string;
 }
 
 async function readCliVersion(): Promise<string> {
-  // The bundled CJS lives at packages/cli/dist/cli.cjs; package.json is one
-  // dir up. In test mode we run from src/, where package.json is two dirs up
-  // from src/commands/version.ts. We try both.
-  // __dirname workaround for ESM source consumed by Node + tsup CJS output.
+  // The bundled CJS lives at packages/cli/dist/cli.cjs — package.json is one
+  // dir up. In test mode we run from src/commands/, where package.json is two
+  // dirs up. Try both, dist layout first.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const here = typeof __dirname === 'string' ? __dirname : dirname(fileURLToPath((import.meta as any).url));
   for (const candidate of [
+    join(here, '..', 'package.json'),
     join(here, '..', '..', 'package.json'),
-    join(here, '..', '..', '..', 'package.json'),
   ]) {
     try {
       const raw = await readFile(candidate, 'utf8');
       const pkg = JSON.parse(raw) as PackageJsonShape;
-      if (typeof pkg.version === 'string') return pkg.version;
+      if (typeof pkg.name === 'string' && pkg.name === '@openagentry/cli' && typeof pkg.version === 'string') {
+        return pkg.version;
+      }
     } catch {
       // try next
     }

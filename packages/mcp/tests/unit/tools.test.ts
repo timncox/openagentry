@@ -10,6 +10,7 @@ describe('buildTools', () => {
       'agentry_capabilities',
       'agentry_doctor',
       'agentry_help',
+      'agentry_init',
       'agentry_list',
       'agentry_version',
     ]);

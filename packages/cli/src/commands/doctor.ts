@@ -48,7 +48,7 @@ async function runChecks(cwd: string): Promise<CheckResult[]> {
     out.push({
       name: 'workspace',
       status: 'warn',
-      detail: 'no workspace found upward from cwd; run `agentry init` (Plan G)',
+      detail: 'no workspace found upward from cwd; run `agentry init` to create one',
     });
   }
 

@@ -24,7 +24,7 @@ export const listCommand = defineCommand({
   async run(_args, output, ctx) {
     const wsRoot = await locateWorkspaceRoot(ctx.cwd);
     if (wsRoot === undefined) {
-      output.text('No workspace configured. Run `agentry init` (Plan G) to start one.');
+      output.text('No workspace configured. Run `agentry init` to start one.');
       output.json({ plugins: [], workspaceRoot: null });
       return 0;
     }

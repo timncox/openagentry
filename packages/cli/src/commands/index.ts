@@ -11,6 +11,7 @@ import { helpCommand } from './help.js';
 import { doctorCommand } from './doctor.js';
 import { listCommand } from './list.js';
 import { capabilitiesCommand } from './capabilities.js';
+import { initCommand } from './init.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -38,3 +39,4 @@ registerCommand(helpCommand);
 registerCommand(doctorCommand);
 registerCommand(listCommand);
 registerCommand(capabilitiesCommand);
+registerCommand(initCommand);

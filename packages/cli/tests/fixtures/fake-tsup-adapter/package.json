@@ -1,0 +1,15 @@
+{
+  "name": "fake-tsup-adapter",
+  "version": "0.0.1",
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "category": "host",
+    "id": "fake-tsup-host",
+    "protocolVersion": "1",
+    "envVars": [],
+    "fillsSlots": ["host"],
+    "requiresSlots": [],
+    "capabilities": { "deploy": true }
+  }
+}
