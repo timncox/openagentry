@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.0-alpha.3 — 2026-05-08
+
+Wide-load testing surfaced one more loader edge case:
+
+- **Plugin loader now distinguishes "missing/bad export" from "explicitly null
+  default".** Some adapters (`adapter-db-neon`, `adapter-host-cloudflare`)
+  intentionally export `default: null` when their required env vars aren't set,
+  so the package can be imported safely without crashing. The previous loader
+  raised `E_PLUGIN_BAD_EXPORT` on these — the new behaviour is to skip
+  registration silently (the manifest still drives `capabilities` reporting).
+  Lazy-default-pattern adapters are unaffected.
+
 ## 0.1.0-alpha.2 — 2026-05-08
 
 Demo-surfaced bug fixes (openagentry-demo, 2026-05-07):

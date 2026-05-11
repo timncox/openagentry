@@ -1,0 +1,17 @@
+{
+  "name": "fake-null-default-adapter",
+  "version": "0.0.1",
+  "main": "./index.cjs",
+  "openagentry": {
+    "type": "adapter",
+    "category": "db",
+    "id": "fake-null-db",
+    "protocolVersion": "1",
+    "envVars": [
+      { "name": "FAKE_DB_API_KEY", "secret": true, "required": false }
+    ],
+    "fillsSlots": ["db"],
+    "requiresSlots": [],
+    "capabilities": { "engine": "fake" }
+  }
+}

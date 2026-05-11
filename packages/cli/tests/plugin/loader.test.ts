@@ -73,4 +73,20 @@ describe('registerAdaptersFromPlugin', () => {
     const a = useAdapter<{ id: string; category: 'host' }>('host');
     expect(a.id).toBe('fake-tsup-host');
   });
+
+  it('does not throw when default export is null (adapter needs config)', async () => {
+    // Some adapters (e.g. adapter-db-neon, adapter-host-cloudflare) export
+    // `default: null` when their required env vars aren't set. The loader
+    // should skip registration without surfacing E_PLUGIN_BAD_EXPORT — the
+    // manifest's category/id still describes the plugin, the live instance
+    // just isn't available until the user provides config.
+    const FIXTURE_NULL = resolve(__dirname, '../fixtures/fake-null-default-adapter');
+    const target = join(workspaceRoot, 'node_modules', 'fake-null-default-adapter');
+    await mkdir(target, { recursive: true });
+    await cp(FIXTURE_NULL, target, { recursive: true });
+
+    const loaded = await loadPlugin(workspaceRoot, 'fake-null-default-adapter');
+    // Should NOT throw.
+    expect(() => registerAdaptersFromPlugin(loaded)).not.toThrow();
+  });
 });

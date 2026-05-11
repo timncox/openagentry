@@ -13,6 +13,7 @@ const __dirname = dirname(__filename);
 const BIN = resolve(__dirname, '..', '..', 'dist', 'cli.cjs');
 const PKG = resolve(__dirname, '..', '..', 'package.json');
 const TSUP_FIXTURE = resolve(__dirname, '..', 'fixtures', 'fake-tsup-adapter');
+const NULL_DEFAULT_FIXTURE = resolve(__dirname, '..', 'fixtures', 'fake-null-default-adapter');
 
 beforeAll(async () => {
   // Ensure the binary is built. If not, fail fast with a useful message.
@@ -106,6 +107,41 @@ describe('agentry capabilities (integration, against tsup-style adapter)', () =>
       loadErrors: Array<{ name: string; code: string }>;
     };
     expect(parsed.categories.host?.adapterId).toBe('fake-tsup-host');
+    expect(parsed.loadErrors).toEqual([]);
+  });
+});
+
+describe('agentry capabilities (integration, against null-default adapter)', () => {
+  let workspaceRoot: string;
+  beforeAll(async () => {
+    workspaceRoot = await mkdtemp(join(tmpdir(), 'agentry-int-null-'));
+    const target = join(workspaceRoot, 'node_modules', 'fake-null-default-adapter');
+    await mkdir(target, { recursive: true });
+    await cp(NULL_DEFAULT_FIXTURE, target, { recursive: true });
+    await writeFile(join(workspaceRoot, 'package.json'), JSON.stringify({ name: 'integ-ws-null' }));
+    await mkdir(join(workspaceRoot, '.agentry'), { recursive: true });
+    await writeFile(
+      join(workspaceRoot, '.agentry', 'workspace.json'),
+      JSON.stringify({ plugins: ['fake-null-default-adapter'], defaultEnv: 'dev' }),
+    );
+  });
+  afterAll(async () => {
+    if (workspaceRoot !== undefined) await rm(workspaceRoot, { recursive: true, force: true });
+  });
+
+  it('reports a null-default adapter via manifest without surfacing loadErrors', async () => {
+    const { stdout, exitCode } = await execa('node', [BIN, 'capabilities', '--json'], {
+      cwd: workspaceRoot,
+    });
+    expect(exitCode).toBe(0);
+    const parsed = JSON.parse(stdout) as {
+      categories: Record<string, { adapterId: string; pluginName: string }>;
+      loadErrors: Array<{ name: string; code: string }>;
+    };
+    // Reported via manifest...
+    expect(parsed.categories.db?.adapterId).toBe('fake-null-db');
+    expect(parsed.categories.db?.pluginName).toBe('fake-null-default-adapter');
+    // ...with no E_PLUGIN_BAD_EXPORT noise.
     expect(parsed.loadErrors).toEqual([]);
   });
 });

@@ -143,13 +143,35 @@ function findAdapterExport(mod: unknown): AdapterMinimalShape | undefined {
 }
 
 /**
+ * Some adapters intentionally export `default: null` when their required env
+ * vars are absent (so the package can be imported safely without crashing).
+ * The lazy-default pattern is preferred, but null-on-missing-config is a
+ * legitimate shape that the loader should accept by skipping registration —
+ * the manifest still describes the plugin to `capabilities`.
+ */
+function isExplicitlyNullDefault(mod: unknown): boolean {
+  const candidate = (mod as { default?: unknown }).default;
+  if (candidate === null) return true;
+  // CJS-ESM interop: mod.default = entire exports object, mod.default.default = null
+  const inner = (candidate as { default?: unknown } | undefined)?.default;
+  return inner === null;
+}
+
+/**
  * For adapter plugins, register the adapter exported by the module. No-op for
- * non-adapter plugin types (scaffold/mcp/command/skill).
+ * non-adapter plugin types (scaffold/mcp/command/skill) AND for adapters whose
+ * default export is explicitly null (needs config — `capabilities` will still
+ * report them via the manifest).
  */
 export function registerAdaptersFromPlugin(plugin: LoadedPlugin): void {
   if (plugin.manifest.type !== 'adapter') return;
   const exported = findAdapterExport(plugin.module);
   if (exported === undefined) {
+    if (isExplicitlyNullDefault(plugin.module)) {
+      // Adapter loaded but needs config to instantiate. Manifest already drives
+      // category/id reporting; skip registration silently.
+      return;
+    }
     throw new AgentryError({
       code: 'E_PLUGIN_BAD_EXPORT',
       message: `Adapter plugin "${plugin.name}" must default-export an object with { category, id }.`,
