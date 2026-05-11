@@ -80,11 +80,21 @@ export class WikiIndex {
     out.sort((a, b) => b.score - a.score);
     return out.slice(0, limit);
   }
-  byTitle(_title: string, _scope?: WikiScope): IndexedPage[] {
-    throw new Error('not implemented yet (Task 7)');
+  byTitle(title: string, scope: WikiScope = 'all'): IndexedPage[] {
+    const needle = title.toLowerCase();
+    return [...this.pages.values()].filter(
+      (p) =>
+        (scope === 'all' || p.scope === scope) && p.title.toLowerCase() === needle,
+    );
   }
-  byTag(_tag: string, _scope?: WikiScope): IndexedPage[] {
-    throw new Error('not implemented yet (Task 7)');
+  byTag(tag: string, scope: WikiScope = 'all'): IndexedPage[] {
+    return [...this.pages.values()].filter((p) => {
+      if (scope !== 'all' && p.scope !== scope) return false;
+      const raw = p.frontmatter.tags;
+      if (typeof raw === 'string') return raw === tag;
+      if (Array.isArray(raw)) return raw.includes(tag);
+      return false;
+    });
   }
   backlinks(_path: string): IndexedPage[] {
     throw new Error('not implemented yet (Task 8)');
