@@ -41,8 +41,44 @@ export class WikiIndex {
 
   // --- Stubs implemented in later tasks ---
 
-  search(_query: string, _opts?: SearchOpts): SearchHit[] {
-    throw new Error('not implemented yet (Task 6)');
+  search(query: string, opts?: SearchOpts): SearchHit[] {
+    const limit = opts?.limit ?? 25;
+    const scope = opts?.scope ?? 'all';
+    const needle = query.trim().toLowerCase();
+    if (needle.length === 0) return [];
+
+    const out: SearchHit[] = [];
+    for (const page of this.pages.values()) {
+      if (scope !== 'all' && page.scope !== scope) continue;
+
+      let score = 0;
+      if (page.title.toLowerCase().includes(needle)) score += 3;
+
+      for (const v of Object.values(page.frontmatter)) {
+        if (typeof v === 'string' && v.toLowerCase().includes(needle)) {
+          score += 2;
+          break;
+        }
+      }
+
+      const bodyLower = page.body.toLowerCase();
+      const bodyIdx = bodyLower.indexOf(needle);
+      if (bodyIdx !== -1) score += 1;
+
+      if (score === 0) continue;
+
+      const snippet = makeSnippet(page.body, bodyIdx);
+      out.push({
+        path: page.path,
+        scope: page.scope,
+        title: page.title,
+        snippet,
+        score,
+      });
+    }
+
+    out.sort((a, b) => b.score - a.score);
+    return out.slice(0, limit);
   }
   byTitle(_title: string, _scope?: WikiScope): IndexedPage[] {
     throw new Error('not implemented yet (Task 7)');
@@ -59,4 +95,15 @@ export class WikiIndex {
   refresh(): Promise<void> {
     throw new Error('not implemented yet (Task 9)');
   }
+}
+
+/** Build a ≤160-char snippet centred on a body match (or the first 160 chars). */
+function makeSnippet(body: string, matchIdx: number): string {
+  const window = 160;
+  const collapsed = body.replace(/\s+/g, ' ').trim();
+  if (matchIdx === -1) return collapsed.slice(0, window);
+  const start = Math.max(0, matchIdx - 60);
+  const end = Math.min(collapsed.length, start + window);
+  const slice = collapsed.slice(start, end);
+  return (start > 0 ? '…' : '') + slice + (end < collapsed.length ? '…' : '');
 }
