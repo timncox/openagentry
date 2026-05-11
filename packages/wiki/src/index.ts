@@ -1,3 +1,11 @@
-// Stub — populated as the package grows. Final form exports WikiIndex,
-// IndexedPage, SearchOpts, SearchHit, extractFrontmatter, extractLinks.
-export const PLACEHOLDER = '@openagentry/wiki';
+/**
+ * @openagentry/wiki — search, frontmatter/tag lookup, and a backlinks graph
+ * over any WikiAdapter.
+ *
+ * @module
+ */
+
+export { WikiIndex } from './wiki-index.js';
+export type { IndexedPage, SearchOpts, SearchHit } from './types.js';
+export { extractFrontmatter, type Frontmatter } from './frontmatter.js';
+export { extractLinks, type ExtractedLinks } from './links.js';
