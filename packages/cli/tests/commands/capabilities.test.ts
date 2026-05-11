@@ -8,6 +8,7 @@ import '../../src/commands/index.js';
 import { resetRegistryForTesting } from '../../../core/src/runtime/resolver.js';
 
 const FIXTURE = resolve(__dirname, '../fixtures/fake-host-adapter');
+const FIXTURE_TWO = resolve(__dirname, '../fixtures/fake-host-adapter-two');
 
 function captureStream(): { stream: Writable; chunks: string[] } {
   const chunks: string[] = [];
@@ -66,5 +67,40 @@ describe('agentry capabilities', () => {
     expect(parsed.categories.host.adapterId).toBe('fake-host');
     expect(parsed.categories.host.fillsSlots).toContain('host');
     expect(parsed.categories.host.capabilities).toMatchObject({ deploy: true });
+  });
+
+  it('reports ALL adapters per category in adaptersByCategory, not just last', async () => {
+    await mkdir(join(workspaceRoot, '.agentry'), { recursive: true });
+    await writeFile(
+      join(workspaceRoot, '.agentry', 'workspace.json'),
+      JSON.stringify({ plugins: ['fake-host-adapter', 'fake-host-adapter-two'] }),
+    );
+    await mkdir(join(workspaceRoot, 'node_modules', 'fake-host-adapter'), { recursive: true });
+    await cp(FIXTURE, join(workspaceRoot, 'node_modules', 'fake-host-adapter'), { recursive: true });
+    await mkdir(join(workspaceRoot, 'node_modules', 'fake-host-adapter-two'), { recursive: true });
+    await cp(FIXTURE_TWO, join(workspaceRoot, 'node_modules', 'fake-host-adapter-two'), {
+      recursive: true,
+    });
+
+    const out = captureStream();
+    const err = captureStream();
+    const code = await dispatch(['capabilities', '--json'], {
+      stdout: out.stream,
+      stderr: err.stream,
+      cwd: workspaceRoot,
+    });
+    expect(code).toBe(0);
+    const parsed = JSON.parse(out.chunks.join('')) as {
+      categories: Record<string, { adapterId: string } | undefined>;
+      adaptersByCategory: Record<string, Array<{ adapterId: string; pluginName: string }> | undefined>;
+    };
+    // categories.host still reports the *default* (last registered).
+    expect(parsed.categories.host?.adapterId).toBe('fake-host-two');
+    // adaptersByCategory.host lists both, in order of declaration.
+    expect(parsed.adaptersByCategory.host).toHaveLength(2);
+    expect((parsed.adaptersByCategory.host ?? []).map((a) => a.adapterId)).toEqual([
+      'fake-host',
+      'fake-host-two',
+    ]);
   });
 });

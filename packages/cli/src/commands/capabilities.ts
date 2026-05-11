@@ -35,7 +35,12 @@ export const capabilitiesCommand = defineCommand({
   summary: 'List capabilities provided by registered adapters.',
   async run(_args, output, ctx) {
     const wsRoot = await locateWorkspaceRoot(ctx.cwd);
+    // categories[cat] = the *default* adapter (last registered, mirrors useAdapter).
     const categories: Record<string, CategoryReport> = {};
+    // adaptersByCategory[cat] = ALL adapters declared for that category, in
+    // workspace.json order. Multiple adapters per category is legal — the
+    // last one becomes the default, but consumers can still discover the rest.
+    const adaptersByCategory: Record<string, CategoryReport[]> = {};
     const loadErrors: Array<{ name: string; code: string; message: string }> = [];
 
     if (wsRoot !== undefined) {
@@ -60,22 +65,33 @@ export const capabilitiesCommand = defineCommand({
           loadErrors.push({ name: p.name, code, message });
         }
         if (p.manifest.type === 'adapter' && p.manifest.category !== undefined) {
-          categories[p.manifest.category] = {
+          const report: CategoryReport = {
             adapterId: p.manifest.id,
             pluginName: p.name,
             fillsSlots: p.manifest.fillsSlots,
             capabilities: p.manifest.capabilities,
           };
+          categories[p.manifest.category] = report;
+          (adaptersByCategory[p.manifest.category] ??= []).push(report);
         }
       }
     }
 
     output.text('Registered capabilities:');
     if (Object.keys(categories).length === 0) {
-      output.text('  (none — install plugins via `agentry install <pkg>` (Plan G))');
+      output.text('  (none — `agentry init <pkg> [<pkg>...]` to register plugins, then `npm install` them)');
     } else {
       for (const [cat, info] of Object.entries(categories)) {
-        output.text(`  ${cat}: ${info.adapterId} (${info.pluginName})`);
+        const all = adaptersByCategory[cat] ?? [];
+        if (all.length > 1) {
+          output.text(`  ${cat}: ${info.adapterId} (${info.pluginName}) — default; ${all.length} adapters available:`);
+          for (const a of all) {
+            const marker = a === info ? '*' : ' ';
+            output.text(`    ${marker} ${a.adapterId} (${a.pluginName})`);
+          }
+        } else {
+          output.text(`  ${cat}: ${info.adapterId} (${info.pluginName})`);
+        }
       }
     }
     output.text('');
@@ -84,6 +100,7 @@ export const capabilitiesCommand = defineCommand({
     output.json({
       workspaceRoot: wsRoot ?? null,
       categories,
+      adaptersByCategory,
       reservedCategories: (adapterCategories as readonly string[]).filter(
         (c) => !(CONTRACTED_CATEGORIES as readonly string[]).includes(c),
       ),

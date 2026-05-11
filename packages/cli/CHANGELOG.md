@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.0-alpha.4 — 2026-05-08
+
+- **`agentry capabilities` now reports ALL adapters per category, not just
+  the last-registered one.** When a workspace declares multiple adapters that
+  fill the same category (e.g. `adapter-llm-cli` + `adapter-llm-aigateway` +
+  `adapter-llm-openrouter`), the JSON output adds an `adaptersByCategory`
+  field listing all of them in workspace.json order. `categories[cat]` still
+  reports the *default* (last registered, mirrors `useAdapter` semantics) for
+  backward compatibility. The text output marks the default with `*` and
+  lists alternates beneath it.
+
 ## 0.1.0-alpha.3 — 2026-05-08
 
 Wide-load testing surfaced one more loader edge case:
