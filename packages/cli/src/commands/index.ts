@@ -15,6 +15,7 @@ import { initCommand } from './init.js';
 import { hostDeployCommand } from './host-deploy.js';
 import { hostSetEnvCommand } from './host-set-env.js';
 import { hostGetEnvCommand } from './host-get-env.js';
+import { hostAttachDomainCommand } from './host-attach-domain.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -46,3 +47,4 @@ registerCommand(initCommand);
 registerCommand(hostDeployCommand);
 registerCommand(hostSetEnvCommand);
 registerCommand(hostGetEnvCommand);
+registerCommand(hostAttachDomainCommand);
