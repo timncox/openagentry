@@ -100,6 +100,7 @@ export type {
 
 export {
   registerAdapter,
+  resetRegistryForTesting,
   unregisterAdapter,
   useAdapter,
 } from './runtime/resolver.js';
