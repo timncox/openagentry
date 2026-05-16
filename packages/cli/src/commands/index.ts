@@ -13,6 +13,7 @@ import { listCommand } from './list.js';
 import { capabilitiesCommand } from './capabilities.js';
 import { initCommand } from './init.js';
 import { hostDeployCommand } from './host-deploy.js';
+import { hostSetEnvCommand } from './host-set-env.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -42,3 +43,4 @@ registerCommand(listCommand);
 registerCommand(capabilitiesCommand);
 registerCommand(initCommand);
 registerCommand(hostDeployCommand);
+registerCommand(hostSetEnvCommand);
