@@ -14,6 +14,7 @@ import { capabilitiesCommand } from './capabilities.js';
 import { initCommand } from './init.js';
 import { hostDeployCommand } from './host-deploy.js';
 import { hostSetEnvCommand } from './host-set-env.js';
+import { hostGetEnvCommand } from './host-get-env.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -44,3 +45,4 @@ registerCommand(capabilitiesCommand);
 registerCommand(initCommand);
 registerCommand(hostDeployCommand);
 registerCommand(hostSetEnvCommand);
+registerCommand(hostGetEnvCommand);
