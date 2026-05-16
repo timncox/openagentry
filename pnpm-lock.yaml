@@ -418,6 +418,12 @@ importers:
 
   packages/cli:
     dependencies:
+      '@openagentry/adapter-host-cloudflare':
+        specifier: workspace:*
+        version: link:../adapter-host-cloudflare
+      '@openagentry/adapter-host-vercel':
+        specifier: workspace:*
+        version: link:../adapter-host-vercel
       '@openagentry/core':
         specifier: workspace:*
         version: link:../core
