@@ -9,9 +9,14 @@ import type {
   HostAdapter,
   HostProject,
   HostStateBundle,
+  IsoTimestamp,
   LogLine,
   LogOpts,
 } from '@openagentry/core';
+
+function isoNow(): IsoTimestamp {
+  return new Date().toISOString() as IsoTimestamp;
+}
 
 export interface FakeHostState {
   projects: Map<string, HostProject>;
@@ -42,6 +47,7 @@ export function createFakeHostAdapter(initial?: Partial<FakeHostState>): {
         id: `proj_${opts.slug}`,
         slug: opts.slug,
         name: opts.name,
+        createdAt: isoNow(),
         hostId: `host_${opts.slug}`,
       };
       state.projects.set(opts.slug, project);
@@ -55,12 +61,11 @@ export function createFakeHostAdapter(initial?: Partial<FakeHostState>): {
     async deploy(p: HostProject, env: 'preview' | 'prod', opts?: DeployOpts): Promise<Deployment> {
       const dep: Deployment = {
         id: `dep_${state.deployments.length + 1}`,
-        projectId: p.id,
         env,
-        ref: opts?.ref ?? 'HEAD',
         url: `https://${p.slug}-${env}.example.com`,
-        status: 'ready',
-        createdAt: new Date().toISOString(),
+        status: 'success',
+        createdAt: isoNow(),
+        meta: { projectId: p.id, ref: opts?.ref ?? 'HEAD' },
       };
       state.deployments.push(dep);
       return dep;
