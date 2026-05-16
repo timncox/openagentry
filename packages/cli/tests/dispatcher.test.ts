@@ -110,3 +110,35 @@ describe('dispatch', () => {
     expect(err.chunks.join('')).toContain('E_UNKNOWN_COMMAND');
   });
 });
+
+import { resetRegistryForTesting, useAdapter } from '@openagentry/core';
+
+describe('dispatch — ensureHostAdapter integration', () => {
+  it('registers host-vercel from OA_VERCEL_TOKEN before running a host command', async () => {
+    resetRegistryForTesting();
+    // Reset bootstrap so it re-evaluates env on next call.
+    const bootstrap = await import('../src/runtime/host-bootstrap.js');
+    bootstrap._resetForTesting();
+
+    const prev = process.env.OA_VERCEL_TOKEN;
+    process.env.OA_VERCEL_TOKEN = 'tok_test';
+    try {
+      // Use a no-op command (help) — bootstrap should still fire.
+      const { Writable } = await import('node:stream');
+      const chunks: string[] = [];
+      const stream = new Writable({
+        write(chunk, _enc, cb) { chunks.push(String(chunk)); cb(); },
+      });
+      const { dispatch } = await import('../src/dispatcher.js');
+      await dispatch(['help'], { stdout: stream, stderr: stream, cwd: process.cwd() });
+      const adapter = useAdapter<{ id: string; category: string }>('host');
+      expect(adapter.id).toBe('host-vercel');
+    } finally {
+      if (prev === undefined) delete process.env.OA_VERCEL_TOKEN;
+      else process.env.OA_VERCEL_TOKEN = prev;
+      resetRegistryForTesting();
+      const bootstrap2 = await import('../src/runtime/host-bootstrap.js');
+      bootstrap2._resetForTesting();
+    }
+  });
+});

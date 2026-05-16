@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `host:deploy`, `host:set-env`, `host:get-env`, `host:attach-domain`, `host:logs` commands that wrap the registered `HostAdapter`. Auto-exposed as MCP tools via `@openagentry/mcp`.
+- `ensureHostAdapter()` bootstrap that registers `host-vercel` or `host-cloudflare` from env vars (`OA_HOST`, `OA_VERCEL_TOKEN`, `OA_CLOUDFLARE_API_TOKEN`, `OA_CLOUDFLARE_ACCOUNT_ID`) on first dispatch.
+
 ## 0.1.0-alpha.4 — 2026-05-08
 
 - **`agentry capabilities` now reports ALL adapters per category, not just

@@ -12,6 +12,11 @@ import { doctorCommand } from './doctor.js';
 import { listCommand } from './list.js';
 import { capabilitiesCommand } from './capabilities.js';
 import { initCommand } from './init.js';
+import { hostDeployCommand } from './host-deploy.js';
+import { hostSetEnvCommand } from './host-set-env.js';
+import { hostGetEnvCommand } from './host-get-env.js';
+import { hostAttachDomainCommand } from './host-attach-domain.js';
+import { hostLogsCommand } from './host-logs.js';
 
 export const commands: Record<string, Command> = {};
 
@@ -40,3 +45,8 @@ registerCommand(doctorCommand);
 registerCommand(listCommand);
 registerCommand(capabilitiesCommand);
 registerCommand(initCommand);
+registerCommand(hostDeployCommand);
+registerCommand(hostSetEnvCommand);
+registerCommand(hostGetEnvCommand);
+registerCommand(hostAttachDomainCommand);
+registerCommand(hostLogsCommand);

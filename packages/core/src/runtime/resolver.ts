@@ -30,7 +30,7 @@ export function useAdapter<T extends AdapterMinimalShape>(category: string): T {
   if (adapter === undefined) {
     throw new AgentryError({
       code: 'E_NO_ADAPTER_FOR_CATEGORY',
-      message: `No adapter registered for category "${category}".`,
+      message: `E_NO_ADAPTER_FOR_CATEGORY: No adapter registered for category "${category}".`,
       phase: 'init',
       suggestedFix: `agentry install @openagentry/adapter-${category}-<provider>`,
       docs: 'https://docs.openagentry.dev/errors/E_NO_ADAPTER_FOR_CATEGORY',
