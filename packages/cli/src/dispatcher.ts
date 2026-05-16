@@ -10,6 +10,7 @@ import type { Writable } from 'node:stream';
 import { parseArgs } from './args.js';
 import { Output } from './output.js';
 import { getCommand } from './commands/index.js';
+import { ensureHostAdapter } from './runtime/host-bootstrap.js';
 
 export interface DispatchOptions {
   stdout?: Writable;
@@ -30,6 +31,7 @@ export async function dispatch(
   const output = new Output({ mode: wantsJson ? 'json' : 'text', stdout, stderr });
 
   try {
+    await ensureHostAdapter(process.env);
     const cmd = getCommand(parsed.command);
     return await cmd.run(parsed, output, { cwd, env: process.env });
   } catch (err) {
