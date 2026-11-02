@@ -10,3 +10,14 @@ coverage/
 .cache/
 .pnpm-store/
 .worktrees/
+# --- secrets & local files (added 2026-11-02, GitHub migration) ---
+.claude/worktrees/
+.dev.vars
+.vercel
+*.key
+*.p12
+*.p8
+*.pem
+!.env.example
+!.env.*.example
+!.env.sample
